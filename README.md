@@ -1,8 +1,14 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# GEJA frontend
+
+## Installing
+
+```shell
+yarn
+```
 
 ## Available Scripts
 
-In the project directory, you can run:
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). As such, you can run the following commands in the project directory:
 
 ### `npm start`
 
