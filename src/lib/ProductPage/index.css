@@ -1,0 +1,17 @@
+
+.product .slider-mobile
+{
+  margin-bottom: 18px;
+}
+.product .slider-desktop
+{
+  display: none;
+}
+@media (min-width: 768px) {
+  .product .slider-mobile {
+    display: none;
+  }
+  .product .slider-desktop {
+    display: block;
+  }
+}
