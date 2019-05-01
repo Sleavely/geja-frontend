@@ -16,6 +16,8 @@ import HomePage from './lib/HomePage'
 import NotFoundPage from './lib/NotFoundPage'
 import CategoryPage from './lib/CategoryPage'
 import ProductPage from './lib/ProductPage'
+import ContactPage from './lib/ContactPage'
+import TermsPage from './lib/TermsPage'
 
 const {
   Header,
@@ -107,9 +109,9 @@ class App extends Component {
               }
 
               <Switch>
-                <Route exact path="/" render={({ match }) => (
-                  <HomePage />
-                )}/>
+                <Route exact path="/" component={HomePage} />
+                <Route path="/kontakt" component={ContactPage} />
+                <Route path="/kopvillkor" component={TermsPage} />
                 {
                   this.state.categories.map((category) => (
                     <Route key={category.path} path={`/${category.path}`} render={({ match }) => (

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import Markdown from 'react-markdown'
 
 import {
@@ -8,7 +7,6 @@ import {
 
 const {
   Title,
-  Paragraph,
 } = Typography
 
 export default class CategoryPage extends Component {

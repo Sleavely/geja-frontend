@@ -6,24 +6,6 @@ import {
   Menu,
 } from 'antd'
 
-const categories = [
-  {
-    path: '/halsband',
-    title: 'Halsband',
-    icon: '/icons/necklace-600x600.png',
-  },
-  {
-    path: '/orhangen',
-    title: 'Örhängen',
-    icon: '/icons/earrings-600x600.png',
-  },
-  {
-    path: '/ringar',
-    title: 'Ringar',
-    icon: '/icons/ring-600x600.png',
-  },
-]
-
 class SideMenu extends Component {
 
   static defaultProps = {
@@ -87,7 +69,7 @@ class SideMenu extends Component {
             title={<span>Övrigt</span>}
           >
             <Menu.Item><Link to={'/kontakt'}>Kontakt</Link></Menu.Item>
-            <Menu.Item><Link to={'/om-oss'}>Om Geja</Link></Menu.Item>
+            <Menu.Item><Link to={'/kopvillkor'}>Köpvillkor</Link></Menu.Item>
           </Menu.SubMenu>
         </Menu>
       </Layout.Sider>
