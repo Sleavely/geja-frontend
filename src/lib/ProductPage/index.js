@@ -56,8 +56,8 @@ export default class ProductPage extends Component {
             </Paragraph>
             <div className="slider-mobile">
               <Carousel autoplay>
-                <img style={{ maxWidth: '100%' }} src="images/pexels-photo-247115.jpeg" alt="" />
-                <img style={{ maxWidth: '100%' }} src="images/pixabay-3090593_1920.jpeg" alt="" />
+                <img style={{ maxWidth: '100%' }} src="/images/pexels-photo-247115.jpeg" alt="" />
+                <img style={{ maxWidth: '100%' }} src="/images/pixabay-3090593_1920.jpeg" alt="" />
               </Carousel>
             </div>
             <Paragraph>
@@ -86,8 +86,8 @@ export default class ProductPage extends Component {
           <Col md={12}>
             <div className="slider-desktop">
               <Carousel autoplay>
-                <img style={{ maxWidth: '100%' }} src="images/pexels-photo-247115.jpeg" alt="" />
-                <img style={{ maxWidth: '100%' }} src="images/pixabay-3090593_1920.jpeg" alt="" />
+                <img style={{ maxWidth: '100%' }} src="/images/pexels-photo-247115.jpeg" alt="" />
+                <img style={{ maxWidth: '100%' }} src="/images/pixabay-3090593_1920.jpeg" alt="" />
               </Carousel>
             </div>
           </Col>

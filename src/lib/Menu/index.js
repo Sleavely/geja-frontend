@@ -1,15 +1,63 @@
 import React, { Component } from 'react'
+import { Link, matchPath, withRouter } from 'react-router-dom'
 
 import {
   Layout,
   Menu,
 } from 'antd'
 
-export default class SideMenu extends Component {
+const categories = [
+  {
+    path: '/halsband',
+    title: 'Halsband',
+    icon: '/icons/necklace-600x600.png',
+  },
+  {
+    path: '/orhangen',
+    title: 'Örhängen',
+    icon: '/icons/earrings-600x600.png',
+  },
+  {
+    path: '/ringar',
+    title: 'Ringar',
+    icon: '/icons/ring-600x600.png',
+  },
+]
+
+class SideMenu extends Component {
 
   static defaultProps = {
     onCollapse: () => {},
-    collapsed: false
+    collapsed: false,
+    categories: [
+      {
+        path: '/orhangen',
+        title: 'Örhängen',
+        icon: '/icons/earrings-600x600.png',
+      },
+    ],
+  }
+
+  getActiveCategoryKeys = () => {
+    let activeRoutes = []
+    this.props.categories
+      .forEach((category, key) => {
+        const match = matchPath(this.props.location.pathname, {...category})
+        if(match) activeRoutes.push(String(key))
+      })
+    return activeRoutes
+  }
+
+  getCategoryItems = () => {
+    return this.props.categories
+    .map((category, key) => (
+      <Menu.Item key={key}>
+        <Link to={'/'+category.path}>
+          <img src={category.icon} style={{ width: '24px', marginRight: 8 }} alt=""/>
+          <span>{ category.title }</span>
+        </Link>
+      </Menu.Item>
+    ))
   }
 
   render() {
@@ -24,32 +72,27 @@ export default class SideMenu extends Component {
         onBreakpoint={(broken) => { console.log(broken); }}
         theme="light"
       >
-        <div className="logo" />
+        <Link to={'/'} title="Till startsidan">
+          <div className="logo" />
+        </Link>
         <Menu
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={this.getActiveCategoryKeys()}
           mode="inline"
         >
-          <Menu.Item key="1">
-            <img src="/icons/necklace-600x600.png" style={{ width: '24px', marginRight: 8 }} alt=""/>
-            <span>Halsband</span>
-          </Menu.Item>
-          <Menu.Item key="2">
-          <img src="/icons/earrings-600x600.png" style={{ width: '24px', marginRight: 8 }} alt=""/>
-            <span>Örhängen</span>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <img src="/icons/ring-600x600.png" style={{ width: '24px', marginRight: 8 }} alt=""/>
-            <span>Ringar</span>
-          </Menu.Item>
+          {
+            this.getCategoryItems()
+          }
           <Menu.SubMenu
             key="sub1"
             title={<span>Övrigt</span>}
           >
-            <Menu.Item>Kontakt</Menu.Item>
-            <Menu.Item>Om Geja</Menu.Item>
+            <Menu.Item><Link to={'/kontakt'}>Kontakt</Link></Menu.Item>
+            <Menu.Item><Link to={'/om-oss'}>Om Geja</Link></Menu.Item>
           </Menu.SubMenu>
         </Menu>
       </Layout.Sider>
     )
   }
 }
+
+export default withRouter(SideMenu)
