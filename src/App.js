@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 import './App.css'
 import {
@@ -15,6 +15,7 @@ import SideMenu from './lib/Menu'
 import HomePage from './lib/HomePage'
 import NotFoundPage from './lib/NotFoundPage'
 import CategoryPage from './lib/CategoryPage'
+import CheckoutPage from './lib/CheckoutPage'
 import ProductPage from './lib/ProductPage'
 import ContactPage from './lib/ContactPage'
 import TermsPage from './lib/TermsPage'
@@ -97,6 +98,14 @@ class App extends Component {
                 onSearch={value => console.log(value)}
                 style={{ maxWidth: 300 }}
               />
+              <Link to={'/kassa'}>
+                { this.state.isResponsive
+                  ? <Button icon="shopping-cart" style={{ marginLeft: 16 }} />
+                  : <Button icon="shopping-cart" style={{ marginLeft: 16 }}>Kassa</Button>
+                }
+
+              </Link>
+
             </Header>
             <Content style={{ margin: '0 16px' }}>
               <Breadcrumb style={{ margin: '16px' }} routes={this.state.routes} />
@@ -110,6 +119,7 @@ class App extends Component {
 
               <Switch>
                 <Route exact path="/" component={HomePage} />
+                <Route path="/kassa" component={CheckoutPage}/>
                 <Route path="/kontakt" component={ContactPage} />
                 <Route path="/kopvillkor" component={TermsPage} />
                 {
