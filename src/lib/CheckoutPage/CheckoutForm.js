@@ -7,24 +7,6 @@ import {
 } from 'react-stripe-elements'
 import { Button } from 'antd'
 
-const elementsStyle = {
-  base: {
-    color: '#303238',
-    fontSize: '16px',
-    fontFamily: '"Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    fontSmoothing: 'antialiased',
-    '::placeholder': {
-      color: '#CFD7DF',
-    },
-  },
-  invalid: {
-    color: '#e5424d',
-    ':focus': {
-      color: '#303238',
-    },
-  },
-}
-
 class CheckoutForm extends Component {
 
   constructor(props) {
@@ -35,11 +17,14 @@ class CheckoutForm extends Component {
       cardNumber: false,
       expiryIsValid: false,
       cvcIsValid: false,
+      processingCard: false,
     }
     this.cardInfoChanged = this.cardInfoChanged.bind(this)
+    this.submit = this.submit.bind(this)
   }
 
   async submit(ev) {
+    this.setState({ processingCard: true })
     let { token } = await this.props.stripe.createToken({
       name: 'Joakim Hedlund'
     })
@@ -87,6 +72,7 @@ class CheckoutForm extends Component {
             && this.state.cardExpiry
             && this.state.cardCvc
           )}
+          loading={this.state.processingCard}
           onClick={this.submit}>
           Betala
         </Button>
