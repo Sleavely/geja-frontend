@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {
-  CardElement,
   CardNumberElement,
   CardExpiryElement,
   CardCVCElement,
@@ -53,7 +52,13 @@ class CheckoutForm extends Component {
       })
     });
 
-    if (response.ok) console.log('Purchase Complete!')
+    if (response.ok) {
+      console.log('Purchase Complete!')
+      //TODO: divert to some confirmation page?
+    } else {
+      //TODO: Display errors and unlock the form
+      this.setState({ processingCard: false })
+    }
   }
 
   cardInfoChanged(changeObj) {
