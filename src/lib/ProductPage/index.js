@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   Carousel,
+  Checkbox,
   Select,
   Statistic,
 } from 'antd'
@@ -76,6 +77,10 @@ export default class ProductPage extends Component {
             >
               {this.props.sizes}
             </Select>
+            <Card style={{ marginBottom: 16 }}>
+              <Checkbox>Lägg till presentförpackning</Checkbox>
+            </Card>
+
                   <Button type="primary" block icon="shopping" size="large" loading={this.state.loading} onClick={this.addToCart}>
                     Lägg i varukorgen
                   </Button>
