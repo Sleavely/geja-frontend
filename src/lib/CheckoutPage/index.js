@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Elements, StripeProvider} from 'react-stripe-elements';
+import { useCart } from "use-cart"
 import CheckoutForm from './CheckoutForm';
 import './elements.css'
 
@@ -27,40 +28,47 @@ const formItemLayout = {
   },
 }
 
-class CheckoutPage extends Component {
-  render() {
-    return (
-      <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">
-        <div className="checkout" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
-          <Title>Kassa</Title>
+export default function CheckoutPage() {
+  const { items: cartItems } = useCart()
 
-          <Timeline>
-            <Timeline.Item dot={<Icon type="home" style={{ fontSize: '16px' }} />}>
-              <Card style={{ maxWidth: 400 }}>
+  return (
+    <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">
+      <>
+      <ul class="cart">
+        {
+        cartItems.map((item, i) => (
+          <li key={i}>{item.quantity}x {item.sku}</li>
+        ))
+        }
+      </ul>
+      <div className="checkout" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
+        <Title>Kassa</Title>
 
-                <Form {...formItemLayout}>
-                  <p>Fyll i dina adressuppgifter</p>
-                  <Form.Item label="E-mail">
-                    <Input />
-                  </Form.Item>
-                </Form>
+        <Timeline>
+          <Timeline.Item dot={<Icon type="home" style={{ fontSize: '16px' }} />}>
+            <Card style={{ maxWidth: 400 }}>
 
-              </Card>
-            </Timeline.Item>
-            <Timeline.Item dot={<Icon type="credit-card" />}>
-              <Card style={{ maxWidth: 400 }}>
+              <Form {...formItemLayout}>
+                <p>Fyll i dina adressuppgifter</p>
+                <Form.Item label="E-mail">
+                  <Input />
+                </Form.Item>
+              </Form>
 
-                <Elements locale={'sv-SE'}>
-                  <CheckoutForm />
-                </Elements>
+            </Card>
+          </Timeline.Item>
+          <Timeline.Item dot={<Icon type="credit-card" />}>
+            <Card style={{ maxWidth: 400 }}>
 
-              </Card>
-            </Timeline.Item>
-          </Timeline>
-        </div>
-      </StripeProvider>
-    );
-  }
+              <Elements locale={'sv-SE'}>
+                <CheckoutForm />
+              </Elements>
+
+            </Card>
+          </Timeline.Item>
+        </Timeline>
+      </div>
+      </>
+    </StripeProvider>
+  )
 }
-
-export default CheckoutPage

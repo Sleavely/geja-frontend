@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from 'react'
 import Markdown from 'react-markdown'
+import { useCart } from "use-cart"
 
 import './index.css';
 import {
@@ -104,6 +105,7 @@ export class OldProductPage extends Component {
 const API_BASE = 'https://aws.triplehead.net/geja'
 
 export default function ProductPage({ slug }) {
+  const { addItem } = useCart()
   const [product, setProduct] = useState({})
   const [error, setError] = useState(null)
 
@@ -154,12 +156,12 @@ export default function ProductPage({ slug }) {
                   <img style={{ maxWidth: '100%' }} src="/images/pixabay-3090593_1920.jpeg" alt="" />
                 </Carousel>
               </div>
-              <div class="description">
+              <div className="description">
               <Markdown source={product.productDescription} />
               </div>
 
               <Card>
-                <Button type="primary" block icon="shopping" size="large">
+                  <Button type="primary" block icon="shopping" size="large" onClick={() => addItem(product.sku)}>
                   Lägg i varukorgen
                 </Button>
               </Card>
