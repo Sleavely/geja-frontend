@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import { useCart } from "use-cart"
 import CheckoutForm from './CheckoutForm';
