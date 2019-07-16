@@ -51,7 +51,7 @@ class SideMenu extends Component {
         onCollapse={this.props.onCollapse}
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => { console.log(broken); }}
+        onBreakpoint={(broken) => { console.log('menu has breakpoint', broken); }}
         theme="light"
       >
         <Link to={'/'} title="Till startsidan">
