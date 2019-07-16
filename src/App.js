@@ -56,11 +56,8 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    fetch(API_BASE+'/contentful/categories')
-      .then((data) => {
-        console.log(data)
-        return data.json()
-      })
+    fetch(`${API_BASE}/contentful/categories`)
+      .then((data) => data.json())
       .then((body) => {
         const categories = body.map((category) => ({
           title: category.title,
