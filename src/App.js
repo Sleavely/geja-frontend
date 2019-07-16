@@ -1,5 +1,7 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { CartProvider } from "use-cart"
+import useLocalStorage from "react-use-localstorage"
 
 import './App.css'
 import {
@@ -44,59 +46,57 @@ const routes = [
   },
 ]
 
-class App extends Component {
-  state = {
-    collapsed: false,
-    isResponsive: undefined,
-    loading: true,
-    routes,
-    categories: [],
-  }
+function App() {
+  const [collapsed, setCollapsed] = useState(false)
+  const [isResponsive, setIsResponsive] = useState(undefined)
+  const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState([])
+  const [cart] = useLocalStorage(
+    "cart",
+    JSON.stringify([])
+  )
 
-  constructor(props) {
-    super(props)
-
+  useEffect(() => {
     fetch(`${API_BASE}/contentful/categories`)
       .then((data) => data.json())
       .then((body) => {
-        const categories = body.map((category) => ({
+        setCategories(body.map((category) => ({
           title: category.title,
           path: category.path, //TODO: contentful should define this as slug for consistency
           icon: category.icon.file.url,
           description: category.categoryDescription
-        }))
-        //setTimeout(() => this.setState({ categories, loading: false }), 2000)
-        this.setState({ categories, loading: false })
+        })))
+        setLoading(false)
       })
-  }
+  }, [])
 
-  onCollapse = (collapsed, type) => {
+
+  const onCollapse = (collapsed, type) => {
     console.log(collapsed, type)
 
-    this.setState({ collapsed, isResponsive: (collapsed && type === 'responsive') })
+    setCollapsed(collapsed)
+    setIsResponsive(collapsed && type === 'responsive')
   }
 
-  toggleMenu = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
+  const toggleMenu = () => {
+    setCollapsed(!collapsed)
   }
 
-  render() {
-    return (
+  return (
+    <CartProvider initialCart={JSON.parse(cart)}>
       <Router>
         <Layout style={{ minHeight: '100vh' }}>
-          <SideMenu collapsed={this.state.collapsed} onCollapse={this.onCollapse} categories={this.state.categories} />
+          <SideMenu collapsed={collapsed} onCollapse={onCollapse} categories={categories} />
           <Layout>
             <Header style={{ background: '#fff', padding: '0 16px' }}>
-              <Button icon="menu" onClick={this.toggleMenu} style={this.state.isResponsive ? { marginRight: 16 } : { display: 'none' }} />
+              <Button icon="menu" onClick={toggleMenu} style={isResponsive ? { marginRight: 16 } : { display: 'none' }} />
               <Search
                 placeholder="Sök i butiken"
                 onSearch={value => console.log(value)}
                 style={{ maxWidth: 300 }}
               />
               <Link to={'/kassa'}>
-                { this.state.isResponsive
+                {isResponsive
                   ? <Button icon="shopping-cart" style={{ marginLeft: 16 }} />
                   : <Button icon="shopping-cart" style={{ marginLeft: 16 }}>Kassa</Button>
                 }
@@ -105,33 +105,33 @@ class App extends Component {
 
             </Header>
             <Content style={{ margin: '0 16px' }}>
-              <Breadcrumb style={{ margin: '16px' }} routes={this.state.routes} />
-              {this.state.routes.length < 2 ? '' :
+              <Breadcrumb style={{ margin: '16px' }} routes={routes} />
+              {routes.length < 2 ? '' :
                 <PageHeader
                   onBack={() => null}
                   title=""
-                  subTitle={`Tillbaka till ${this.state.routes.slice(-2, -1)[0].breadcrumbName}`}
+                  subTitle={`Tillbaka till ${routes.slice(-2, -1)[0].breadcrumbName}`}
                 />
               }
 
               <Switch>
                 <Route exact path="/" component={HomePage} />
-                <Route path="/kassa" component={CheckoutPage}/>
+                <Route path="/kassa" component={CheckoutPage} />
                 <Route path="/kontakt" component={ContactPage} />
                 <Route path="/kopvillkor" component={TermsPage} />
                 {
-                  this.state.categories.map((category) => (
+                  categories.map((category) => (
                     <Route key={category.path} path={`/${category.path}`} render={({ match }) => (
                       <CategoryPage category={category} />
-                    )}/>
+                    )} />
                   ))
                 }
                 <Route path="/products/:slug" render={({ match }) => (
                   <ProductPage slug={match.params.slug} />
-                )}/>
+                )} />
                 <Route component={({ match }) => (
-                  <NotFoundPage match={match} loading={this.state.loading} />
-                )}/>
+                  <NotFoundPage match={match} loading={loading} />
+                )} />
               </Switch>
 
             </Content>
@@ -141,8 +141,9 @@ class App extends Component {
           </Layout>
         </Layout>
       </Router>
-    );
-  }
+    </CartProvider>
+  );
+
 }
 
 export default App;
