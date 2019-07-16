@@ -126,8 +126,8 @@ class App extends Component {
                     )}/>
                   ))
                 }
-                <Route path="/products/:productId" render={({ match }) => (
-                  <ProductPage productId={match.params.productId} />
+                <Route path="/products/:slug" render={({ match }) => (
+                  <ProductPage slug={match.params.slug} />
                 )}/>
                 <Route component={({ match }) => (
                   <NotFoundPage match={match} loading={this.state.loading} />
