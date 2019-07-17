@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { CartProvider } from "use-cart"
-import useLocalStorage from "react-use-localstorage"
 
 import './App.css'
 import {
@@ -21,6 +20,8 @@ import CheckoutPage from './lib/CheckoutPage'
 import ProductPage from './lib/ProductPage'
 import ContactPage from './lib/ContactPage'
 import TermsPage from './lib/TermsPage'
+
+import { LoadCart, SaveCart } from "./utils/cartStorage"
 
 const {
   Header,
@@ -51,10 +52,6 @@ function App() {
   const [isResponsive, setIsResponsive] = useState(undefined)
   const [loading, setLoading] = useState(true)
   const [categories, setCategories] = useState([])
-  const [cart] = useLocalStorage(
-    "cart",
-    JSON.stringify([])
-  )
 
   useEffect(() => {
     fetch(`${API_BASE}/contentful/categories`)
@@ -83,7 +80,8 @@ function App() {
   }
 
   return (
-    <CartProvider initialCart={JSON.parse(cart)}>
+    <CartProvider initialCart={LoadCart()}>
+      <SaveCart />
       <Router>
         <Layout style={{ minHeight: '100vh' }}>
           <SideMenu collapsed={collapsed} onCollapse={onCollapse} categories={categories} />
