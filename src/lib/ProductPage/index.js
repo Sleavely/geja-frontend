@@ -161,7 +161,7 @@ export default function ProductPage({ slug }) {
               </div>
 
               <Card>
-                  <Button type="primary" block icon="shopping" size="large" onClick={() => addItem(product.sku)}>
+                  <Button type="primary" block icon="shopping" size="large" onClick={() => addItem(product.slug)}>
                   Lägg i varukorgen
                 </Button>
               </Card>
