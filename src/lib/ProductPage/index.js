@@ -150,12 +150,17 @@ export default function ProductPage({ slug }) {
               <Paragraph>
                 <Statistic title="" value={product.price} suffix="SEK" groupSeparator=" " />
               </Paragraph>
+              { product.image && (
               <div className="slider-mobile">
                 <Carousel autoplay>
-                  <img style={{ maxWidth: '100%' }} src="/images/pexels-photo-247115.jpeg" alt="" />
-                  <img style={{ maxWidth: '100%' }} src="/images/pixabay-3090593_1920.jpeg" alt="" />
+                  {
+                    product.image.map((image) => (
+                      <img src={image.file.url} alt="" />
+                    ))
+                  }
                 </Carousel>
               </div>
+              )}
               <div className="description">
               <Markdown source={product.productDescription} />
               </div>
@@ -166,14 +171,19 @@ export default function ProductPage({ slug }) {
                 </Button>
               </Card>
             </Col>
+            { product.image && (
             <Col md={12}>
               <div className="slider-desktop">
                 <Carousel autoplay>
-                  <img style={{ maxWidth: '100%' }} src="/images/pexels-photo-247115.jpeg" alt="" />
-                  <img style={{ maxWidth: '100%' }} src="/images/pixabay-3090593_1920.jpeg" alt="" />
+                  {
+                    product.image.map((image) => (
+                      <img src={image.file.url} alt="" />
+                    ))
+                  }
                 </Carousel>
               </div>
             </Col>
+            )}
           </Row>
         </Skeleton>
       )}

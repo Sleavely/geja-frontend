@@ -11,13 +11,7 @@ class SideMenu extends Component {
   static defaultProps = {
     onCollapse: () => {},
     collapsed: false,
-    categories: [
-      {
-        path: '/orhangen',
-        title: 'Örhängen',
-        icon: '/icons/earrings-600x600.png',
-      },
-    ],
+    categories: [],
   }
 
   getActiveCategoryKeys = () => {

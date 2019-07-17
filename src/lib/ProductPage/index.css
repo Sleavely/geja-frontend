@@ -1,17 +1,21 @@
 
-.product .slider-mobile
+.product.page .ant-carousel img {
+  max-width: 100%;
+}
+
+.product.page .slider-mobile
 {
   margin-bottom: 18px;
 }
-.product .slider-desktop
+.product.page .slider-desktop
 {
   display: none;
 }
 @media (min-width: 768px) {
-  .product .slider-mobile {
+  .product.page .slider-mobile {
     display: none;
   }
-  .product .slider-desktop {
+  .product.page .slider-desktop {
     display: block;
   }
 }

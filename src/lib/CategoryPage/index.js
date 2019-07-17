@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Markdown from 'react-markdown'
 import { Link } from 'react-router-dom'
 
+import './index.css'
 import {
   Card,
   Divider,
+  Skeleton,
+  Spin,
   Typography,
 } from 'antd'
 
@@ -12,34 +15,17 @@ const {
   Title,
 } = Typography
 
+const {
+  REACT_APP_API_BASE_PATH: API_BASE_PATH
+} = process.env
+
 export default function CategoryPage({ category }) {
   const [products, setProducts] = useState([])
-  const [error, setError] = useState(null)
-
-  const API_BASE = 'https://aws.triplehead.net/geja'
 
   useEffect(() => {
-    fetch(`${API_BASE}/contentful/categories/${category.path}/products`)
-      .then((data) => {
-        //TODO: shouldnt the router be responsible to 404-like management?
-        console.log('product response', data)
-        if(!data.ok) {
-          if(data.status === 404) {
-            throw new Error('Sidan finns inte.')
-          }
-          throw new Error('Något gick fel när vi kontaktade servern.')
-        }
-        return data.json()
-      })
-      .then((body) => {
-        if(body.error) throw new Error(body.error)
-
-        // Set it as our state
-        setProducts(body)
-      })
-      .catch((err) => {
-        setError(err)
-      })
+    fetch(`${API_BASE_PATH}/contentful/categories/${category.path}/products`)
+      .then((data) => data.json())
+      .then(setProducts)
   }, [category])
 
   return (
@@ -47,20 +33,26 @@ export default function CategoryPage({ category }) {
       <Title>{category.title}</Title>
       <Markdown source={category.description} />
 
-      <div className="products" style={{ display: products.length ? undefined : 'none' }}>
+
+      <div className="products">
         <Divider />
-        { products.map((product, i) => (
+        { !products.length
+        ? Array.from(Array(3)).map((_,i) => (
+            <div
+              className="productCard"
+              key={i}
+            >
+              <Card loading={true} cover={<Spin />}>
+                <Skeleton active />
+              </Card>
+            </div>
+          ))
+        : products.map((product, i) => (
           <div
           className="productCard"
           key={i}
-          style={{
-            maxWidth: 240,
-            display: 'inline-block',
-            margin: 16,
-            'boxSizing': 'border-box'
-          }}
           >
-            <Link to={`/products/${product.slug}`}>
+            <Link to={`/${category.path}/${product.slug}`}>
               <Card
                 hoverable
                 cover={( product.image.length

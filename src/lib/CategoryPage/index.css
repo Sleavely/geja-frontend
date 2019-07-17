@@ -1,0 +1,27 @@
+
+.category.page .products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.category.page .products .productCard {
+  display: inline-block;
+  flex: 1 0 30%;
+  min-width: 180px;
+  max-width: 30%;
+  margin-bottom: 16px;
+}
+
+.category.page .products .productCard img {
+  max-width: 100%;
+  padding: 2px;
+}
+.productCard .ant-spin {
+  margin: 48px 0 32px;
+}
+@media (max-width: 440px) {
+  .category.page .products .productCard {
+    min-width: 100%;
+  }
+}
