@@ -30,22 +30,9 @@ const {
 } = Layout
 const { Search } = Input
 
-const API_BASE = 'https://aws.triplehead.net/geja'
-
-const routes = [
-  {
-    path: '/',
-    breadcrumbName: 'Startsidan',
-  },
-  {
-    path: 'halsband',
-    breadcrumbName: 'Halsband',
-  },
-  {
-    path: 'halsband-classic-790',
-    breadcrumbName: 'Halsband Classic 790',
-  },
-]
+const {
+  REACT_APP_API_BASE_PATH: API_BASE_PATH
+} = process.env
 
 function App() {
   const [collapsed, setCollapsed] = useState(false)
@@ -54,7 +41,7 @@ function App() {
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
-    fetch(`${API_BASE}/contentful/categories`)
+    fetch(`${API_BASE_PATH}/contentful/categories`)
       .then((data) => data.json())
       .then((body) => {
         setCategories(body.map((category) => ({
