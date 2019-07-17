@@ -134,7 +134,7 @@ export default function ProductPage({ slug }) {
   }, [slug]);
 
   return (
-    <div className="product" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
+    <div className="product page">
       {error ? (
         <Alert
           message="Hoppsan!"

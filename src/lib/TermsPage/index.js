@@ -14,7 +14,7 @@ export default class TermsPage extends Component {
 
   render() {
     return (
-      <div className="terms" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
+      <div className="terms page">
         <Title>Konsumentinformation</Title>
 
         <Title level={3}>FÖRETAGSINFORMATION</Title>

@@ -41,7 +41,7 @@ export default function CheckoutPage() {
         ))
         }
       </ul>
-      <div className="checkout" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
+      <div className="checkout page">
         <Title>Kassa</Title>
 
         <Timeline>

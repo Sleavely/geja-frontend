@@ -19,7 +19,7 @@ export default class ProductPage extends Component {
 
   render() {
     return (
-      <div className="notfound" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
+      <div className="notfound page">
         <Skeleton active loading={this.props.loading}>
           <Title>404 - Sidan finns inte</Title>
           <Paragraph>Hoppsan! Den här länken verkar trasig. <Link to="/">Tillbaka till startsidan</Link>?</Paragraph>

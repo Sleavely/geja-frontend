@@ -43,7 +43,7 @@ export default function CategoryPage({ category }) {
   }, [category])
 
   return (
-    <div className="category" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
+    <div className="category page">
       <Title>{category.title}</Title>
       <Markdown source={category.description} />
 

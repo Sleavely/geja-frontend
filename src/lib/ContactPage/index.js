@@ -13,7 +13,7 @@ export default class ContactPage extends Component {
 
   render() {
     return (
-      <div className="contact" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
+      <div className="contact page">
         <Title>Kontakta oss</Title>
         <Paragraph>Rackarns, vi har tappat bort vår kontaktinformation!</Paragraph>
       </div>
