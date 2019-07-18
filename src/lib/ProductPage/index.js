@@ -52,7 +52,11 @@ export default function ProductPage({ slug }) {
       .catch((err) => {
         setError(err)
       })
-  }, [slug]);
+  }, [slug])
+
+  useEffect(() => {
+    if (product.sku) document.title = `${product.productName} | GEJA Smycken`;
+  }, [product])
 
   return (
     <div className="product page">

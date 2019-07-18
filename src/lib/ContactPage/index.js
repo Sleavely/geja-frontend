@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 
 import {
   Typography,
@@ -9,14 +9,16 @@ const {
   Paragraph,
 } = Typography
 
-export default class ContactPage extends Component {
+export default function ContactPage () {
 
-  render() {
-    return (
-      <div className="contact page">
-        <Title>Kontakta oss</Title>
-        <Paragraph>Rackarns, vi har tappat bort vår kontaktinformation!</Paragraph>
-      </div>
-    )
-  }
+  useEffect(() => {
+    document.title = `Kontakt | GEJA Smycken`
+  })
+
+  return (
+    <div className="contact page">
+      <Title>Kontakta oss</Title>
+      <Paragraph>Rackarns, vi har tappat bort vår kontaktinformation!</Paragraph>
+    </div>
+  )
 }

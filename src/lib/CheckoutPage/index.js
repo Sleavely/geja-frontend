@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import { useCart } from "use-cart"
 import CheckoutForm from './CheckoutForm';
@@ -30,6 +30,10 @@ const formItemLayout = {
 
 export default function CheckoutPage() {
   const { items: cartItems } = useCart()
+
+  useEffect(() => {
+    document.title = `Kassan | GEJA Smycken`
+  }, [])
 
   return (
     <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">

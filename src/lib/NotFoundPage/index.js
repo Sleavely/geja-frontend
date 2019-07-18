@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
@@ -11,20 +11,18 @@ const {
   Paragraph,
 } = Typography
 
-export default class ProductPage extends Component {
+export default function ProductPage ({ loading = false }) {
 
-  static defaultProps = {
-    loading: false
-  }
+  useEffect(() => {
+    document.title = `404 | GEJA Smycken`
+  })
 
-  render() {
-    return (
-      <div className="notfound page">
-        <Skeleton active loading={this.props.loading}>
-          <Title>404 - Sidan finns inte</Title>
-          <Paragraph>Hoppsan! Den här länken verkar trasig. <Link to="/">Tillbaka till startsidan</Link>?</Paragraph>
-        </Skeleton>
-      </div>
-    )
-  }
+  return (
+    <div className="notfound page">
+      <Skeleton active loading={loading}>
+        <Title>404 - Sidan finns inte</Title>
+        <Paragraph>Hoppsan! Den här länken verkar trasig. <Link to="/">Tillbaka till startsidan</Link>?</Paragraph>
+      </Skeleton>
+    </div>
+  )
 }
