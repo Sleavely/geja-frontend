@@ -67,10 +67,23 @@ function App() {
       <SaveCart />
       <Router>
         <Layout style={{ minHeight: '100vh' }}>
-          <SideMenu collapsed={collapsed} onCollapse={onCollapse} categories={categories} />
+          <SideMenu
+            isResponsive={isResponsive}
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+            onCollapse={onCollapse}
+            categories={categories}
+          />
           <Layout>
             <Header style={{ background: '#fff', padding: '0 16px' }}>
-              <Button icon="menu" onClick={toggleMenu} style={isResponsive ? { marginRight: 16 } : { display: 'none' }} />
+              <Button icon="menu" onClick={toggleMenu} style={isResponsive && collapsed ? { marginLeft: 16 } : { display: 'none' }} />
+
+              { isResponsive && collapsed && (
+                <Link to={'/'} title="Till startsidan">
+                  <div className="logo" />
+                </Link>
+              ) }
+
 
               <Link to={'/kassa'}>
                 <Button icon="shopping-cart" style={{ marginLeft: 16 }}>Kassa</Button>

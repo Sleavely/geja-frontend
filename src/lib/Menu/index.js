@@ -1,31 +1,31 @@
-import React, { Component } from 'react'
+import React, { useRef } from 'react'
 import { Link, matchPath, withRouter } from 'react-router-dom'
-
+import useClickAway from 'react-use/lib/useClickAway'
 import {
   Layout,
   Menu,
 } from 'antd'
+import './index.css'
 
-class SideMenu extends Component {
+function SideMenu({ onCollapse, collapsed, setCollapsed, isResponsive, location, categories }) {
+  const ref = useRef(null)
 
-  static defaultProps = {
-    onCollapse: () => {},
-    collapsed: false,
-    categories: [],
-  }
+  useClickAway(ref, () => {
+    if(isResponsive) setCollapsed(true)
+  })
 
-  getActiveCategoryKeys = () => {
+  const getActiveCategoryKeys = () => {
     let activeRoutes = []
-    this.props.categories
+    categories
       .forEach((category, key) => {
-        const match = matchPath(this.props.location.pathname, {...category})
+        const match = matchPath(location.pathname, {...category})
         if(match) activeRoutes.push(String(key))
       })
     return activeRoutes
   }
 
-  getCategoryItems = () => {
-    return this.props.categories
+  const getCategoryItems = () => {
+    return categories
     .map((category, key) => (
       <Menu.Item key={key}>
         <Link to={'/'+category.path}>
@@ -36,27 +36,28 @@ class SideMenu extends Component {
     ))
   }
 
-  render() {
-    return (
-      <Layout.Sider
-        trigger={null}
-        collapsible
-        collapsed={this.props.collapsed}
-        onCollapse={this.props.onCollapse}
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => { console.log('menu has breakpoint', broken); }}
-        theme="light"
-      >
-        <Link to={'/'} title="Till startsidan">
+  return (
+    <Layout.Sider
+      trigger={null}
+      collapsible
+      collapsed={collapsed}
+      onCollapse={onCollapse}
+      breakpoint="lg"
+      collapsedWidth="0"
+      onBreakpoint={(broken) => { console.log('menu has breakpoint', broken); }}
+      theme="light"
+    >
+      <div className="menuWrapper menuClickTarget" ref={ref}>
+        <Link to={'/'} title="Till startsidan" onClick={() => isResponsive && setCollapsed(true)}>
           <div className="logo" />
         </Link>
         <Menu
-          defaultSelectedKeys={this.getActiveCategoryKeys()}
+          defaultSelectedKeys={getActiveCategoryKeys()}
           mode="inline"
+          onClick={() => isResponsive && setCollapsed(true)}
         >
           {
-            this.getCategoryItems()
+            getCategoryItems()
           }
           <Menu.SubMenu
             key="sub1"
@@ -66,9 +67,9 @@ class SideMenu extends Component {
             <Menu.Item><Link to={'/kopvillkor'}>Köpvillkor</Link></Menu.Item>
           </Menu.SubMenu>
         </Menu>
-      </Layout.Sider>
-    )
-  }
+      </div>
+    </Layout.Sider>
+  )
 }
 
 export default withRouter(SideMenu)
