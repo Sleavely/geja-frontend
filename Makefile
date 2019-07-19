@@ -8,4 +8,6 @@ DEPLOYMENT_BUCKET = geja-cloud-frontend
 
 deploy:
 	npx react-scripts build
-	aws s3 sync build/ s3://$(DEPLOYMENT_BUCKET)
+	aws s3 sync \
+	  --metadata GitBranch=$(BRANCH_NAME),GitCommit=$(COMMIT_HASH) \
+	  build/ s3://$(DEPLOYMENT_BUCKET)
