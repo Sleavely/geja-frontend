@@ -6,10 +6,13 @@ import './elements.css'
 
 import {
   Card,
+  Col,
   Form,
   Icon,
   Input,
-  Timeline,
+  Row,
+  Result,
+  Statistic,
   Typography,
 } from 'antd'
 
@@ -37,42 +40,61 @@ export default function CheckoutPage() {
 
   return (
     <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">
-      <>
-      <ul class="cart">
-        {
-        cartItems.map((item, i) => (
-          <li key={i}>{item.quantity}x {item.sku}</li>
-        ))
-        }
-      </ul>
       <div className="checkout page">
         <Title>Kassa</Title>
 
-        <Timeline>
-          <Timeline.Item dot={<Icon type="home" style={{ fontSize: '16px' }} />}>
-            <Card style={{ maxWidth: 400 }}>
+        <Row gutter={32}>
 
+          <Col xs={24} md={14}>
+            <Card className="cart">
+              <ul>
+                {
+                  cartItems.map((item, i) => (
+                    <li key={i}>{item.quantity}x {item.sku}</li>
+                  ))
+                }
+              </ul>
+              <Statistic title="Total kostnad" value={1612893} suffix={'SEK'} decimalSeparator={','} groupSeparator={' '} />
+            </Card>
+          </Col>
+
+          <Col xs={24} md={10}>
+            <Card style={{ marginBottom: 16 }}>
               <Form {...formItemLayout}>
-                <p>Fyll i dina adressuppgifter</p>
+                <Title level={4}>
+                  <Icon type="home" />
+                  &nbsp;
+                  Adressuppgifter
+                </Title>
                 <Form.Item label="E-mail">
                   <Input />
                 </Form.Item>
               </Form>
-
             </Card>
-          </Timeline.Item>
-          <Timeline.Item dot={<Icon type="credit-card" />}>
-            <Card style={{ maxWidth: 400 }}>
-
+            <Card>
+              <Title level={4}>
+                <Icon type="credit-card" />
+                &nbsp;
+                Betalning
+              </Title>
               <Elements locale={'sv-SE'}>
                 <CheckoutForm />
               </Elements>
 
             </Card>
-          </Timeline.Item>
-        </Timeline>
+          </Col>
+
+        </Row>
+        <div>
+          <Result
+            status="success"
+            title="Ditt köp är klart"
+            subTitle={(
+              <p>Ordernummer: 20190719105809888<br />Du får snart en bekräftelse via e-mail.</p>
+            )}
+          />
+        </div>
       </div>
-      </>
     </StripeProvider>
   )
 }
