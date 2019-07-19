@@ -31,6 +31,13 @@ const formItemLayout = {
   },
 }
 
+const CardDiv = ({ children }) => {
+  // the div here can interchangably be switched for the Card component
+  return (
+    <div>{ children }</div>
+  )
+}
+
 export default function CheckoutPage() {
   const { items: cartItems } = useCart()
 
@@ -45,8 +52,13 @@ export default function CheckoutPage() {
 
         <Row gutter={32}>
 
-          <Col xs={24} md={14}>
-            <Card className="cart">
+          <Col xs={24} xl={14}>
+            <CardDiv className="cart" style={{ marginBottom: 16 }}>
+              <Title level={4}>
+                <Icon type="shopping-cart" />
+                &nbsp;
+                Varukorgen
+              </Title>
               <ul>
                 {
                   cartItems.map((item, i) => (
@@ -55,11 +67,11 @@ export default function CheckoutPage() {
                 }
               </ul>
               <Statistic title="Total kostnad" value={1612893} suffix={'SEK'} decimalSeparator={','} groupSeparator={' '} />
-            </Card>
+            </CardDiv>
           </Col>
 
-          <Col xs={24} md={10}>
-            <Card style={{ marginBottom: 16 }}>
+          <Col xs={24} xl={10}>
+            <CardDiv style={{ marginBottom: 16 }}>
               <Form {...formItemLayout}>
                 <Title level={4}>
                   <Icon type="home" />
@@ -70,8 +82,8 @@ export default function CheckoutPage() {
                   <Input />
                 </Form.Item>
               </Form>
-            </Card>
-            <Card>
+            </CardDiv>
+            <CardDiv>
               <Title level={4}>
                 <Icon type="credit-card" />
                 &nbsp;
@@ -81,7 +93,7 @@ export default function CheckoutPage() {
                 <CheckoutForm />
               </Elements>
 
-            </Card>
+            </CardDiv>
           </Col>
 
         </Row>
