@@ -1,7 +1,13 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import Markdown from 'react-markdown'
+import { Link } from 'react-router-dom'
 
+import './index.css'
 import {
+  Card,
+  Divider,
+  Skeleton,
+  Spin,
   Typography,
 } from 'antd'
 
@@ -9,18 +15,59 @@ const {
   Title,
 } = Typography
 
-export default class CategoryPage extends Component {
+const {
+  REACT_APP_API_BASE_PATH: API_BASE_PATH
+} = process.env
 
-  static defaultProps = {
-    category: {}
-  }
+export default function CategoryPage({ category }) {
+  const [products, setProducts] = useState(false)
 
-  render() {
-    return (
-      <div className="category" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
-        <Title>{this.props.category.title}</Title>
-        <Markdown source={this.props.category.description} />
+  useEffect(() => {
+    fetch(`${API_BASE_PATH}/contentful/categories/${category.path}/products`)
+      .then((data) => data.json())
+      .then(setProducts)
+    if(category.title) document.title = `${category.title} | GEJA Smycken`
+  }, [category])
+
+  return (
+    <div className="category page">
+      <Title>{category.title}</Title>
+      <Markdown source={category.description} />
+
+
+      <div className="products">
+        <Divider />
+        { products === false
+        ? Array.from(Array(3)).map((_,i) => (
+            <div
+              className="productCard"
+              key={i}
+            >
+              <Card loading={true} cover={<Spin />}>
+                <Skeleton active />
+              </Card>
+            </div>
+          ))
+        : products.map((product, i) => (
+          <div
+          className="productCard"
+          key={i}
+          >
+            <Link to={`/${category.path}/${product.slug}`}>
+              <Card
+                hoverable
+                cover={( product.image.length
+                  ? <img alt={product.image[0].title} src={product.image[0].file.url} />
+                  : false
+                )}
+              >
+                <Card.Meta title={product.productName} description={`${product.price} SEK`} />
+              </Card>
+            </Link>
+          </div>
+
+        ))}
       </div>
-    )
-  }
+    </div>
+  )
 }

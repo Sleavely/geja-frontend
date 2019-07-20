@@ -1,12 +1,19 @@
 @import '~antd/dist/antd.css';
 
 .logo {
-  height: 32px;
   background-image: url(/geja.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
+  display: inline-block;
+  height: 32px;
   margin: 16px;
+  width: 76px;
+  vertical-align: bottom;
+}
+
+.menuWrapper .logo {
+  width: calc(100% - 32px);
 }
 
 html,
@@ -18,4 +25,10 @@ body
 section section.ant-layout {
   max-width: 1280px;
   margin: 0 auto;
+}
+
+.page {
+  background: #fff;
+  min-height: 160px;
+  padding: 24px;
 }

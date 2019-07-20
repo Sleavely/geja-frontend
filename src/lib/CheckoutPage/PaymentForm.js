@@ -7,7 +7,7 @@ import {
 } from 'react-stripe-elements'
 import { Button } from 'antd'
 
-class CheckoutForm extends Component {
+class PaymentForm extends Component {
 
   constructor(props) {
     super(props)
@@ -82,4 +82,4 @@ class CheckoutForm extends Component {
   }
 }
 
-export default injectStripe(CheckoutForm)
+export default injectStripe(PaymentForm)

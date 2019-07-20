@@ -1,14 +1,21 @@
-import React, {Component} from 'react';
-import {Elements, StripeProvider} from 'react-stripe-elements';
-import CheckoutForm from './CheckoutForm';
+import React, { useEffect, useState } from 'react'
+import useReactRouter from 'use-react-router'
+import { useCart } from 'use-cart'
+import {Elements, StripeProvider} from 'react-stripe-elements'
+import Cart from './Cart'
+import PaymentForm from './PaymentForm'
 import './elements.css'
 
 import {
+  Button,
   Card,
+  Col,
+  Drawer,
   Form,
   Icon,
   Input,
-  Timeline,
+  Row,
+  Result,
   Typography,
 } from 'antd'
 
@@ -27,40 +34,125 @@ const formItemLayout = {
   },
 }
 
-class CheckoutPage extends Component {
-  render() {
-    return (
-      <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">
-        <div className="checkout" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
-          <Title>Kassa</Title>
+const {
+  REACT_APP_API_BASE_PATH: API_BASE_PATH
+} = process.env
 
-          <Timeline>
-            <Timeline.Item dot={<Icon type="home" style={{ fontSize: '16px' }} />}>
-              <Card style={{ maxWidth: 400 }}>
+const CardDiv = ({ children }) => {
+  // the div here can interchangably be switched for the Card component
+  return (
+    <Card style={{ marginBottom: 32 }}>{ children }</Card>
+  )
+}
 
+export default function CheckoutPage() {
+  const { history } = useReactRouter()
+  const { items: cartItems, removeLineItem } = useCart()
+  const [productCache, setProductCache] = useState([])
+  const [confirmationVisible, setConfirmationVisible] = useState(false)
+
+  useEffect(() => {
+    document.title = `Kassan | GEJA Smycken`
+
+    Promise.all(cartItems.map((item) => {
+      return fetch(`${API_BASE_PATH}/contentful/products/${item.sku}`)
+        .then((data) => data.json())
+    }))
+    .then((products) => {
+      setProductCache(products)
+    })
+  }, [])
+
+  return (
+    <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">
+      <div className="checkout page">
+        <Title>Kassa</Title>
+
+        <Row gutter={32}>
+
+          <Col xs={24} xl={14}>
+            <CardDiv className="cart">
+              <Title level={4}>
+                <Icon type="shopping-cart" />
+                &nbsp;
+                Varukorgen
+              </Title>
+              <Cart productCache={productCache} />
+            </CardDiv>
+          </Col>
+
+          <Col xs={24} xl={10}>
+            {
+              cartItems.length ? (
+              <>
+              <CardDiv>
                 <Form {...formItemLayout}>
-                  <p>Fyll i dina adressuppgifter</p>
+                  <Title level={4}>
+                    <Icon type="home" />
+                    &nbsp;
+                    Adressuppgifter
+                  </Title>
                   <Form.Item label="E-mail">
                     <Input />
                   </Form.Item>
                 </Form>
-
-              </Card>
-            </Timeline.Item>
-            <Timeline.Item dot={<Icon type="credit-card" />}>
-              <Card style={{ maxWidth: 400 }}>
-
+              </CardDiv>
+              <CardDiv>
+                <Title level={4}>
+                  <Icon type="credit-card" />
+                  &nbsp;
+                  Betalning
+                </Title>
                 <Elements locale={'sv-SE'}>
-                  <CheckoutForm />
+                  <PaymentForm />
                 </Elements>
+                <Button onClick={(event) => {
+                  console.log(event)
+                  console.log(event.target)
+                  console.log(Object.keys(event))
+                  event.target.loading = true
+                  setTimeout(() => {
+                    setConfirmationVisible(true)
+                  }, 1000)
+                }}>
+                  Show Confirmation
+                </Button>
+              </CardDiv>
+              </>
+              ) : ''
+            }
+          </Col>
 
-              </Card>
-            </Timeline.Item>
-          </Timeline>
+        </Row>
+        <div>
+          <Drawer
+            placement="bottom"
+            closable={false}
+            visible={confirmationVisible}
+            onClose={() => {
+              setConfirmationVisible(false)
+              const purchaseDone = true
+              if(purchaseDone) {
+                cartItems.forEach(({ sku }) => {
+                  //removeLineItem(sku)
+                })
+                setTimeout(() => {
+                  history.push("/")
+                }, 300)
+              }
+            }}
+            height={`70vh`}
+          >
+            <Result
+              status="success"
+              title="Ditt köp är klart"
+              subTitle={(
+                <p>Ordernummer: 20190719105809888<br />Du får snart en bekräftelse via e-mail.</p>
+              )}
+            />
+          </Drawer>
         </div>
-      </StripeProvider>
-    );
-  }
+      </div>
+    </StripeProvider>
+  )
 }
-
-export default CheckoutPage

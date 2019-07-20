@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
@@ -10,16 +10,16 @@ const {
   Paragraph,
 } = Typography
 
-export default class HomePage extends Component {
+export default function HomePage() {
 
+  useEffect(() => {
+    document.title = `GEJA Smycken`
+  })
 
-  render() {
-    console.log('props', this.props)
-    return (
-      <div className="home" style={{ padding: 24, background: '#fff', minHeight: 160 }}>
-        <Title>Välkommen till Geja!</Title>
-        <Paragraph>Här kan man köpa fina grejer! Kolla till exempel <Link to="/products/halsband-classic-790">Halsband Classic 790</Link>!</Paragraph>
-      </div>
-    )
-  }
+  return (
+    <div className="home page">
+      <Title>Välkommen till Geja!</Title>
+      <Paragraph>Här kan man köpa fina grejer! Kolla till exempel <Link to="/products/halsband-classic-790">Halsband Classic 790</Link>!</Paragraph>
+    </div>
+  )
 }
