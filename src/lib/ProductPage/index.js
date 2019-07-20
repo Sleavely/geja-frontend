@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Markdown from 'react-markdown'
 import { useCart } from "use-cart"
 
-import './index.css';
 import {
   Row,
   Col,
@@ -15,6 +14,8 @@ import {
   Skeleton,
   Statistic,
 } from 'antd'
+
+import './index.css'
 
 const {
   Title,
