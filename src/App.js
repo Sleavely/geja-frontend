@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { CartProvider } from "use-cart"
 
 import './App.css'
 import {
   Layout,
-  Button,
 } from 'antd'
 
+import HeaderMenu from './utils/HeaderMenu'
 import SideMenu from './lib/Menu'
 import HomePage from './lib/HomePage'
 import NotFoundPage from './lib/NotFoundPage'
@@ -21,7 +21,6 @@ import { LoadCart, SaveCart } from './utils/cartStorage'
 import PageHeader from './utils/PageHeader'
 
 const {
-  Header,
   Content,
   Footer,
 } = Layout
@@ -75,21 +74,11 @@ function App() {
             categories={categories}
           />
           <Layout>
-            <Header style={{ background: '#fff', padding: '0 16px' }}>
-              <Button icon="menu" onClick={toggleMenu} style={isResponsive && collapsed ? { marginLeft: 16 } : { display: 'none' }} />
-
-              { isResponsive && collapsed && (
-                <Link to={'/'} title="Till startsidan">
-                  <div className="logo" />
-                </Link>
-              ) }
-
-
-              <Link to={'/kassa'}>
-                <Button icon="shopping-cart" style={{ marginLeft: 16 }}>Kassa</Button>
-              </Link>
-
-            </Header>
+            <HeaderMenu
+              collapsed={collapsed}
+              isResponsive={isResponsive}
+              toggleMenu={toggleMenu}
+            />
             <Content style={!collapsed ? { margin: '0 16px' } : {}}>
               <PageHeader />
 

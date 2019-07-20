@@ -1,21 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import { useCart } from "use-cart"
 import CheckoutForm from './CheckoutForm';
 import './elements.css'
 
 import {
-  Card,
+  Avatar,
+  Button,
   Col,
   Form,
   Icon,
   Input,
   Row,
   Result,
+  Skeleton,
   Statistic,
   Typography,
 } from 'antd'
 
+const ButtonGroup = Button.Group
 const {
   Title,
 } = Typography
@@ -31,6 +34,10 @@ const formItemLayout = {
   },
 }
 
+const {
+  REACT_APP_API_BASE_PATH: API_BASE_PATH
+} = process.env
+
 const CardDiv = ({ children }) => {
   // the div here can interchangably be switched for the Card component
   return (
@@ -39,10 +46,17 @@ const CardDiv = ({ children }) => {
 }
 
 export default function CheckoutPage() {
-  const { items: cartItems } = useCart()
+  const { items: cartItems, addItem, removeItem } = useCart()
+  const [productCache, setProductCache] = useState([])
 
   useEffect(() => {
     document.title = `Kassan | GEJA Smycken`
+
+    Promise.all(cartItems.map((item) => {
+      return fetch(`${API_BASE_PATH}/contentful/products/${item.sku}`)
+        .then((data) => data.json())
+    }))
+    .then(setProductCache)
   }, [])
 
   return (
@@ -61,9 +75,28 @@ export default function CheckoutPage() {
               </Title>
               <ul>
                 {
-                  cartItems.map((item, i) => (
-                    <li key={i}>{item.quantity}x {item.sku}</li>
-                  ))
+                  cartItems.map((cartItem, i) => {
+                    const product = productCache.find((product) => product.slug === cartItem.sku)
+                    if(!product) return (
+                      <li key={i}>
+                        <Skeleton active avatar={true} paragraph={false}></Skeleton>
+                      </li>
+                    )
+                    return (
+                      <li key={i}>
+                        <Avatar src={product.image[0].file.url} shape="square" size="large" />
+                        {cartItem.quantity}x {product.sku}
+                        <ButtonGroup>
+                          <Button onClick={() => { removeItem(cartItem.sku) }}>
+                            <Icon type="minus" />
+                          </Button>
+                          <Button onClick={() => { addItem(cartItem.sku) }}>
+                            <Icon type="plus" />
+                          </Button>
+                        </ButtonGroup>
+                      </li>
+                    )
+                  })
                 }
               </ul>
               <Statistic title="Total kostnad" value={1612893} suffix={'SEK'} decimalSeparator={','} groupSeparator={' '} />
