@@ -20,7 +20,7 @@ const {
 } = process.env
 
 export default function CategoryPage({ category }) {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState(false)
 
   useEffect(() => {
     fetch(`${API_BASE_PATH}/contentful/categories/${category.path}/products`)
@@ -37,7 +37,7 @@ export default function CategoryPage({ category }) {
 
       <div className="products">
         <Divider />
-        { !products.length
+        { products === false
         ? Array.from(Array(3)).map((_,i) => (
             <div
               className="productCard"

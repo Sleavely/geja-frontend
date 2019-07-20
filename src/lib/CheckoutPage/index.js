@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import {Elements, StripeProvider} from 'react-stripe-elements';
-import { useCart } from "use-cart"
-import CheckoutForm from './CheckoutForm';
+import React, { useEffect, useState } from 'react'
+import useReactRouter from 'use-react-router'
+import { useCart } from 'use-cart'
+import {Elements, StripeProvider} from 'react-stripe-elements'
+import Cart from './Cart'
+import PaymentForm from './PaymentForm'
 import './elements.css'
 
 import {
-  Avatar,
   Button,
+  Card,
   Col,
+  Drawer,
   Form,
   Icon,
   Input,
   Row,
   Result,
-  Skeleton,
-  Statistic,
   Typography,
 } from 'antd'
 
-const ButtonGroup = Button.Group
 const {
   Title,
 } = Typography
@@ -41,13 +41,15 @@ const {
 const CardDiv = ({ children }) => {
   // the div here can interchangably be switched for the Card component
   return (
-    <div>{ children }</div>
+    <Card style={{ marginBottom: 32 }}>{ children }</Card>
   )
 }
 
 export default function CheckoutPage() {
-  const { items: cartItems, addItem, removeItem } = useCart()
+  const { history } = useReactRouter()
+  const { items: cartItems, removeLineItem } = useCart()
   const [productCache, setProductCache] = useState([])
+  const [confirmationVisible, setConfirmationVisible] = useState(false)
 
   useEffect(() => {
     document.title = `Kassan | GEJA Smycken`
@@ -56,7 +58,9 @@ export default function CheckoutPage() {
       return fetch(`${API_BASE_PATH}/contentful/products/${item.sku}`)
         .then((data) => data.json())
     }))
-    .then(setProductCache)
+    .then((products) => {
+      setProductCache(products)
+    })
   }, [])
 
   return (
@@ -67,77 +71,86 @@ export default function CheckoutPage() {
         <Row gutter={32}>
 
           <Col xs={24} xl={14}>
-            <CardDiv className="cart" style={{ marginBottom: 16 }}>
+            <CardDiv className="cart">
               <Title level={4}>
                 <Icon type="shopping-cart" />
                 &nbsp;
                 Varukorgen
               </Title>
-              <ul>
-                {
-                  cartItems.map((cartItem, i) => {
-                    const product = productCache.find((product) => product.slug === cartItem.sku)
-                    if(!product) return (
-                      <li key={i}>
-                        <Skeleton active avatar={true} paragraph={false}></Skeleton>
-                      </li>
-                    )
-                    return (
-                      <li key={i}>
-                        <Avatar src={product.image[0].file.url} shape="square" size="large" />
-                        {cartItem.quantity}x {product.sku}
-                        <ButtonGroup>
-                          <Button onClick={() => { removeItem(cartItem.sku) }}>
-                            <Icon type="minus" />
-                          </Button>
-                          <Button onClick={() => { addItem(cartItem.sku) }}>
-                            <Icon type="plus" />
-                          </Button>
-                        </ButtonGroup>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
-              <Statistic title="Total kostnad" value={1612893} suffix={'SEK'} decimalSeparator={','} groupSeparator={' '} />
+              <Cart productCache={productCache} />
             </CardDiv>
           </Col>
 
           <Col xs={24} xl={10}>
-            <CardDiv style={{ marginBottom: 16 }}>
-              <Form {...formItemLayout}>
+            {
+              cartItems.length ? (
+              <>
+              <CardDiv>
+                <Form {...formItemLayout}>
+                  <Title level={4}>
+                    <Icon type="home" />
+                    &nbsp;
+                    Adressuppgifter
+                  </Title>
+                  <Form.Item label="E-mail">
+                    <Input />
+                  </Form.Item>
+                </Form>
+              </CardDiv>
+              <CardDiv>
                 <Title level={4}>
-                  <Icon type="home" />
+                  <Icon type="credit-card" />
                   &nbsp;
-                  Adressuppgifter
+                  Betalning
                 </Title>
-                <Form.Item label="E-mail">
-                  <Input />
-                </Form.Item>
-              </Form>
-            </CardDiv>
-            <CardDiv>
-              <Title level={4}>
-                <Icon type="credit-card" />
-                &nbsp;
-                Betalning
-              </Title>
-              <Elements locale={'sv-SE'}>
-                <CheckoutForm />
-              </Elements>
-
-            </CardDiv>
+                <Elements locale={'sv-SE'}>
+                  <PaymentForm />
+                </Elements>
+                <Button onClick={(event) => {
+                  console.log(event)
+                  console.log(event.target)
+                  console.log(Object.keys(event))
+                  event.target.loading = true
+                  setTimeout(() => {
+                    setConfirmationVisible(true)
+                  }, 1000)
+                }}>
+                  Show Confirmation
+                </Button>
+              </CardDiv>
+              </>
+              ) : ''
+            }
           </Col>
 
         </Row>
         <div>
-          <Result
-            status="success"
-            title="Ditt köp är klart"
-            subTitle={(
-              <p>Ordernummer: 20190719105809888<br />Du får snart en bekräftelse via e-mail.</p>
-            )}
-          />
+          <Drawer
+            placement="bottom"
+            closable={false}
+            visible={confirmationVisible}
+            onClose={() => {
+              setConfirmationVisible(false)
+              const purchaseDone = true
+              if(purchaseDone) {
+                cartItems.forEach(({ sku }) => {
+                  //removeLineItem(sku)
+                })
+                setTimeout(() => {
+                  history.push("/")
+                }, 300)
+              }
+            }}
+            height={`70vh`}
+          >
+            <Result
+              status="success"
+              title="Ditt köp är klart"
+              subTitle={(
+                <p>Ordernummer: 20190719105809888<br />Du får snart en bekräftelse via e-mail.</p>
+              )}
+            />
+          </Drawer>
         </div>
       </div>
     </StripeProvider>

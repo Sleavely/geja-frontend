@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import { CartProvider } from "use-cart"
 
 import './App.css'
@@ -103,7 +103,7 @@ function App() {
 
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-              GEJA Trading HB &copy; 2019
+              <Link to={'/kontakt'}>GEJA Trading HB</Link> &copy; 2019
             </Footer>
           </Layout>
         </Layout>
