@@ -31,7 +31,6 @@ export default function Cart({ productCache }) {
               Ta bort
             </Button>
           ]}>
-            <>
             <List.Item.Meta
               avatar={
                 <Avatar src={product.image[0].file.url} shape="square" size="large" />
@@ -41,13 +40,21 @@ export default function Cart({ productCache }) {
             <div>
               {cartItem.quantity}st á {product.price} SEK
             </div>
-
-            </>
           </List.Item>
         )}}
       >
-        <List.Item>
-          <Skeleton loading={!cartItems.every(cartItem => productCache.some(cached => cached.slug === cartItem.sku))}>
+
+        <Skeleton loading={!cartItems.every(cartItem => productCache.some(cached => cached.slug === cartItem.sku))}>
+          <List.Item actions={[<div style={{ width: 76.34 }}></div>]}>
+            <List.Item.Meta
+              avatar={ <Avatar src={'https://www.postnord.com/UI/gfx/logo.svg'} shape="square" size="large" style={{ border: '1px solid #f0f2f5' }} /> }
+              title="Frakt"
+            />
+            <div>
+              Gratis
+            </div>
+          </List.Item>
+          <List.Item>
             <List.Item.Meta />
             <Statistic
               style={{ marginRight: 120 }}
@@ -62,8 +69,8 @@ export default function Cart({ productCache }) {
               groupSeparator={' '}
               decimalSeparator={','}
             />
-          </Skeleton>
         </List.Item>
+        </Skeleton>
       </List>
     : <p>Din varukorg är tom.</p>
     }
