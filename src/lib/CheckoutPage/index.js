@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import useReactRouter from 'use-react-router'
 import { useCart } from 'use-cart'
 import {Elements, StripeProvider} from 'react-stripe-elements'
 import Cart from './Cart'
+import Confirmation from './Confirmation'
+import { getCartId } from '../../utils/cartStorage'
 import PaymentForm from './PaymentForm'
 import './elements.css'
 
@@ -10,12 +11,10 @@ import {
   Button,
   Card,
   Col,
-  Drawer,
   Form,
   Icon,
   Input,
   Row,
-  Result,
   Typography,
 } from 'antd'
 
@@ -26,11 +25,13 @@ const {
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8 },
+    sm: { span: 4 },
+    xl: { span: 8 },
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 16 },
+    sm: { span: 12 },
+    xl: { span: 16 },
   },
 }
 
@@ -46,10 +47,11 @@ const CardDiv = ({ children }) => {
 }
 
 export default function CheckoutPage() {
-  const { history } = useReactRouter()
-  const { items: cartItems, removeLineItem } = useCart()
+  const { items: cartItems } = useCart()
   const [productCache, setProductCache] = useState([])
-  const [confirmationVisible, setConfirmationVisible] = useState(false)
+  const [customerInfo, setCustomerInfo] = useState(null)
+  const [ordernumber, setOrdernumber] = useState(null)
+  const cartId = getCartId()
 
   useEffect(() => {
     document.title = `Kassan | GEJA Smycken`
@@ -62,6 +64,25 @@ export default function CheckoutPage() {
       setProductCache(products)
     })
   }, [])
+
+  // Set up or update a PaymentIntent
+  useEffect(() => {
+    fetch(`${API_BASE_PATH}/checkout/cart`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        cartId,
+        items: cartItems
+      })
+    })
+    .then(res => res.json())
+    .then((res) => {
+      console.log('Retrieved cart info from backend.', res)
+    })
+    .catch((err) => {
+      console.error('Something went sideways in the backend while fetching the PaymentIntent', err)
+    })
+  }, [cartItems])
 
   return (
     <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">
@@ -92,11 +113,28 @@ export default function CheckoutPage() {
                     &nbsp;
                     Adressuppgifter
                   </Title>
-                  <Form.Item label="E-mail">
+                  <br />
+                  <Form.Item label="E-postadress">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="Förnamn">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="Efternamn">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="Gatuadress">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="Postnummer">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="Postort">
                     <Input />
                   </Form.Item>
                 </Form>
               </CardDiv>
+              <div style={{ transition: 'all 0.3s', transitionProperty: 'max-height', overflow: 'hidden', maxHeight: customerInfo ? 500 : 0 }}>
               <CardDiv>
                 <Title level={4}>
                   <Icon type="credit-card" />
@@ -112,46 +150,20 @@ export default function CheckoutPage() {
                   console.log(Object.keys(event))
                   event.target.loading = true
                   setTimeout(() => {
-                    setConfirmationVisible(true)
+                    setOrdernumber(1337666)
                   }, 1000)
                 }}>
                   Show Confirmation
                 </Button>
               </CardDiv>
+              </div>
               </>
               ) : ''
             }
           </Col>
 
         </Row>
-        <div>
-          <Drawer
-            placement="bottom"
-            closable={false}
-            visible={confirmationVisible}
-            onClose={() => {
-              setConfirmationVisible(false)
-              const purchaseDone = true
-              if(purchaseDone) {
-                cartItems.forEach(({ sku }) => {
-                  //removeLineItem(sku)
-                })
-                setTimeout(() => {
-                  history.push("/")
-                }, 300)
-              }
-            }}
-            height={`70vh`}
-          >
-            <Result
-              status="success"
-              title="Ditt köp är klart"
-              subTitle={(
-                <p>Ordernummer: 20190719105809888<br />Du får snart en bekräftelse via e-mail.</p>
-              )}
-            />
-          </Drawer>
-        </div>
+        <Confirmation ordernumber={ordernumber} />
       </div>
     </StripeProvider>
   )
