@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
-import { CartProvider } from "use-cart"
+import { CartProvider } from 'use-cart'
+import useMedia from 'react-use/lib/useMedia'
 
 import './App.css'
 import {
@@ -30,6 +31,7 @@ const {
 } = process.env
 
 function App() {
+  const isWide = useMedia('(min-width: 1480px)')
   const [collapsed, setCollapsed] = useState(false)
   const [isResponsive, setIsResponsive] = useState(undefined)
   const [loading, setLoading] = useState(true)
@@ -79,7 +81,7 @@ function App() {
               isResponsive={isResponsive}
               toggleMenu={toggleMenu}
             />
-            <Content style={!collapsed ? { margin: '0 16px' } : {}}>
+            <Content style={!isResponsive && !isWide ? { margin: '0 16px' } : {}}>
               <PageHeader />
 
               <Switch>
