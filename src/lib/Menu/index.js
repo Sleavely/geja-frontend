@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import { Link, matchPath, withRouter } from 'react-router-dom'
 import useClickAway from 'react-use/lib/useClickAway'
 import {
+  Affix,
   Layout,
   Menu,
 } from 'antd'
@@ -45,8 +46,10 @@ function SideMenu({ onCollapse, collapsed, setCollapsed, isResponsive, location,
       breakpoint="lg"
       collapsedWidth="0"
       onBreakpoint={(broken) => { console.log('menu has breakpoint', broken); }}
+      style={ isResponsive && !collapsed ? { borderRight: '1px solid #f0f2f5', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.09)' } : {} }
       theme="light"
     >
+      <Affix offsetTop={0}>
       <div className="menuWrapper menuClickTarget" ref={ref}>
         <Link to={'/'} title="Till startsidan" onClick={() => isResponsive && setCollapsed(true)}>
           <div className="logo" />
@@ -68,6 +71,7 @@ function SideMenu({ onCollapse, collapsed, setCollapsed, isResponsive, location,
           </Menu.SubMenu>
         </Menu>
       </div>
+      </Affix>
     </Layout.Sider>
   )
 }

@@ -39,6 +39,7 @@ export default function CustomPageHeader() {
         <PageHeader
           onBack={() => history.push(routes.slice(-2, -1)[0].path)}
           subTitle={`Tillbaka till ${routes.slice(-2, -1)[0].breadcrumbName}`}
+          style={{ position: 'unset' /* because relative makes the menu shadow weird */}}
         />
       }
     </div>
