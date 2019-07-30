@@ -24,26 +24,38 @@ class PaymentForm extends Component {
   }
 
   async submit(ev) {
-    this.setState({ processingCard: true })
-    let { token } = await this.props.stripe.createToken({
-      name: 'Joakim Hedlund'
-    })
-    let response = await fetch('https://aws.triplehead.net/geja/stripe/charge', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        stripeEmail: 'contact@joakimhedlund.com',
-        stripeToken: token.id,
-      })
-    });
+    ev.preventDefault()
 
-    if (response.ok) {
-      console.log('Purchase Complete!')
-      //TODO: divert to some confirmation page?
-    } else {
-      //TODO: Display errors and unlock the form
+    this.setState({ processingCard: true })
+
+    const paymentIntent = this.props.paymentIntent
+    const paymentConfirmed = this.props.paymentConfirmed
+    const customerInfo = this.props.customerInfo
+
+    this.props.stripe.handleCardPayment(paymentIntent.client_secret, {
+      shipping: {
+        name: `${customerInfo.firstname} ${customerInfo.lastname}`,
+        address: {
+          line1: customerInfo.street,
+          postal_code: customerInfo.zipcode,
+          city: customerInfo.city
+        },
+      },
+      receipt_email: customerInfo.email,
+    })
+    .then((result) => {
+      if (result.error) {
+        console.error('Something went wrong while processing the payment intent.', result.error)
+        this.setState({ processingCard: false })
+      } else {
+        console.log('Payment succeeded', result)
+        paymentConfirmed()
+      }
+    })
+    .catch((err) => {
+      console.error('Something went wrong while processing the payment intent.', err)
       this.setState({ processingCard: false })
-    }
+    })
   }
 
   cardInfoChanged(changeObj) {

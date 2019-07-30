@@ -3,12 +3,11 @@ import { useCart } from 'use-cart'
 import {Elements, StripeProvider} from 'react-stripe-elements'
 import Cart from './Cart'
 import Confirmation from './Confirmation'
-import { getCartId } from '../../utils/cartStorage'
+import { useCartId } from '../../utils/cartStorage'
 import PaymentForm from './PaymentForm'
 import './elements.css'
 
 import {
-  Button,
   Card,
   Col,
   Form,
@@ -47,11 +46,12 @@ const CardDiv = ({ children }) => {
 }
 
 export default function CheckoutPage() {
-  const { items: cartItems } = useCart()
+  const { items: cartItems, clearCart } = useCart()
   const [productCache, setProductCache] = useState([])
   const [customerInfo, setCustomerInfo] = useState(null)
-  const [ordernumber, setOrdernumber] = useState(null)
-  const cartId = getCartId()
+  const [confirmationVisible, setConfirmationVisible] = useState(false)
+  const [paymentIntent, setPaymentIntent] = useState(null)
+  const [cartId, setCartId] = useCartId()
 
   useEffect(() => {
     document.title = `Kassan | GEJA Smycken`
@@ -67,6 +67,7 @@ export default function CheckoutPage() {
 
   // Set up or update a PaymentIntent
   useEffect(() => {
+    if(!cartItems.length) return undefined
     fetch(`${API_BASE_PATH}/checkout/cart`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -77,12 +78,22 @@ export default function CheckoutPage() {
     })
     .then(res => res.json())
     .then((res) => {
+      if (res.error) throw new Error(res.error)
+      setPaymentIntent(res.paymentIntent)
+      setCartId(res.paymentIntent.id)
       console.log('Retrieved cart info from backend.', res)
     })
     .catch((err) => {
-      console.error('Something went sideways in the backend while fetching the PaymentIntent', err)
+      // Something went sideways in the backend while fetching the PaymentIntent
+      console.error(err)
     })
   }, [cartItems])
+
+  const paymentConfirmed = () => {
+    setCartId('')
+    clearCart()
+    setConfirmationVisible(true)
+  }
 
   return (
     <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">
@@ -98,7 +109,11 @@ export default function CheckoutPage() {
                 &nbsp;
                 Varukorgen
               </Title>
-              <Cart productCache={productCache} />
+              {
+                confirmationVisible
+                ? <p>Din varukorg har tömts.</p>
+                : <Cart productCache={productCache} />
+              }
             </CardDiv>
           </Col>
 
@@ -107,7 +122,14 @@ export default function CheckoutPage() {
               cartItems.length ? (
               <>
               <CardDiv>
-                <Form {...formItemLayout}>
+                <Form {...formItemLayout} onChange={(e) => {
+                  e.persist()
+                  const newCustomerInfo = customerInfo
+                    ? { ...customerInfo, [e.target.name]: e.target.value }
+                    : { [e.target.name]: e.target.value}
+                  setCustomerInfo(newCustomerInfo)
+                  console.log('form changed', newCustomerInfo)
+                }}>
                   <Title level={4}>
                     <Icon type="home" />
                     &nbsp;
@@ -115,26 +137,26 @@ export default function CheckoutPage() {
                   </Title>
                   <br />
                   <Form.Item label="E-postadress">
-                    <Input />
+                    <Input name="email" />
                   </Form.Item>
                   <Form.Item label="Förnamn">
-                    <Input />
+                    <Input name="firstname" />
                   </Form.Item>
                   <Form.Item label="Efternamn">
-                    <Input />
+                    <Input name="lastname" />
                   </Form.Item>
                   <Form.Item label="Gatuadress">
-                    <Input />
+                    <Input name="street" />
                   </Form.Item>
                   <Form.Item label="Postnummer">
-                    <Input />
+                    <Input name="zipcode" />
                   </Form.Item>
                   <Form.Item label="Postort">
-                    <Input />
+                    <Input name="city" />
                   </Form.Item>
                 </Form>
               </CardDiv>
-              <div style={{ transition: 'all 0.3s', transitionProperty: 'max-height', overflow: 'hidden', maxHeight: customerInfo ? 500 : 0 }}>
+              <div style={{ transition: 'all 0.3s', transitionProperty: 'max-height', overflow: 'hidden', maxHeight: customerInfo ? 500 : 600 }}>
               <CardDiv>
                 <Title level={4}>
                   <Icon type="credit-card" />
@@ -142,28 +164,18 @@ export default function CheckoutPage() {
                   Betalning
                 </Title>
                 <Elements locale={'sv-SE'}>
-                  <PaymentForm />
+                  <PaymentForm {...{paymentIntent, customerInfo, paymentConfirmed}} />
                 </Elements>
-                <Button onClick={(event) => {
-                  console.log(event)
-                  console.log(event.target)
-                  console.log(Object.keys(event))
-                  event.target.loading = true
-                  setTimeout(() => {
-                    setOrdernumber(1337666)
-                  }, 1000)
-                }}>
-                  Show Confirmation
-                </Button>
               </CardDiv>
               </div>
               </>
               ) : ''
             }
           </Col>
-
         </Row>
-        <Confirmation ordernumber={ordernumber} />
+        {
+          confirmationVisible ? <Confirmation paymentIntent={paymentIntent} /> : ''
+        }
       </div>
     </StripeProvider>
   )

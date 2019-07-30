@@ -12,8 +12,6 @@ const getCartStorage = () => {
 // Regular function to be used inline
 export const LoadCart = () => {
   const [cart] = getCartStorage()
-  // Make sure the cart ID is set
-  getCartId()
   return cart
 }
 
@@ -30,25 +28,9 @@ export function SaveCart() {
   )
 }
 
-export const getCartId = () => {
-  let [cartId, setCartId] = storage(
+export const useCartId = () => {
+ return storage(
     'cartId',
     ''
   )
-  if (!cartId) {
-    // Invent one
-    cartId = resetCartId([cartId, setCartId])
-  }
-  return cartId
-}
-
-export const resetCartId = (state) => {
-  let [cartId, setCartId] = state || storage(
-    'cartId',
-    ''
-  )
-  // Invent a new one
-  cartId = Math.random().toString(36).substr(2, 10)
-  setCartId(cartId)
-  return cartId
 }
