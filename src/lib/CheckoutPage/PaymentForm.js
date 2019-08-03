@@ -5,7 +5,10 @@ import {
   CardCVCElement,
   injectStripe,
 } from 'react-stripe-elements'
-import { Button } from 'antd'
+import {
+  Alert,
+  Button,
+} from 'antd'
 
 class PaymentForm extends Component {
 
@@ -18,6 +21,7 @@ class PaymentForm extends Component {
       expiryIsValid: false,
       cvcIsValid: false,
       processingCard: false,
+      paymentError: '',
     }
     this.cardInfoChanged = this.cardInfoChanged.bind(this)
     this.submit = this.submit.bind(this)
@@ -26,7 +30,7 @@ class PaymentForm extends Component {
   async submit(ev) {
     ev.preventDefault()
 
-    this.setState({ processingCard: true })
+    this.setState({ processingCard: true, paymentError: '' })
 
     const paymentIntent = this.props.paymentIntent
     const paymentConfirmed = this.props.paymentConfirmed
@@ -46,7 +50,7 @@ class PaymentForm extends Component {
     .then((result) => {
       if (result.error) {
         console.error('Something went wrong while processing the payment intent.', result.error)
-        this.setState({ processingCard: false })
+        this.setState({ processingCard: false, paymentError: result.error.message })
       } else {
         console.log('Payment succeeded', result)
         paymentConfirmed()
@@ -54,7 +58,7 @@ class PaymentForm extends Component {
     })
     .catch((err) => {
       console.error('Something went wrong while processing the payment intent.', err)
-      this.setState({ processingCard: false })
+      this.setState({ processingCard: false, paymentError: err.message })
     })
   }
 
@@ -88,6 +92,12 @@ class PaymentForm extends Component {
           onClick={this.submit}>
           Betala
         </Button>
+
+        {
+          this.state.paymentError
+          ? <Alert message={this.state.paymentError} type="error" showIcon />
+          : ''
+        }
 
       </div>
     )
