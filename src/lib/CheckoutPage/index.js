@@ -67,7 +67,9 @@ export default function CheckoutPage() {
 
   // Set up or update a PaymentIntent
   useEffect(() => {
+    // Dont try to create a paymentIntent when cart has been emptied post-purchase
     if(!cartItems.length) return undefined
+
     fetch(`${API_BASE_PATH}/checkout/cart`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
