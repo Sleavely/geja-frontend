@@ -46,6 +46,10 @@ class PaymentForm extends Component {
         },
       },
       receipt_email: customerInfo.email,
+      metadata: {
+        customer_firstname: customerInfo.firstname,
+        customer_lastname: customerInfo.lastname,
+      }
     })
     .then((result) => {
       if (result.error) {
