@@ -17,7 +17,7 @@ export default function TermsPage () {
 
   return (
     <div className="terms page">
-      <Title>Konsumentinformation</Title>
+      <Title>Konsument<wbr/>information</Title>
 
       <Title level={3}>FÖRETAGSINFORMATION</Title>
       <Paragraph>GEJA Smycken drivs av GEJA Trading Handelsbolag, org.nr 969600-5736</Paragraph>
@@ -31,7 +31,7 @@ export default function TermsPage () {
         147 55 Tungelsta
       </Paragraph>
 
-      <Title level={3}>FÖRSÄLJNINGS-OCH LEVERANSVILLKOR</Title>
+      <Title level={3}>FÖRSÄLJNINGS- OCH LEVERANSVILLKOR</Title>
 
       <Title level={4}>Priser</Title>
       <Paragraph>Alla priser anges i svenska kronor och innehåller mervärdesskatt och övriga avgifter. Totalkostnaden för köpet kommer att framkomma tydligt innan slutlig beställning och kommer att inkludera samtliga kostnader förenade med köpet, inklusive eventuella porto-och fraktkostnader.</Paragraph>
