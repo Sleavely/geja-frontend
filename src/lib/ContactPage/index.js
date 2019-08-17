@@ -25,7 +25,7 @@ const ContactForm = Form.create({
     })
   }
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form {...props} onSubmit={handleSubmit}>
       <Form.Item label="Din e-postadress" extra="Ange den e-postadress du vill att vi svarar till.">
         {getFieldDecorator('email', {
           rules: [{ required: true, type: 'email', message: 'Din e-postadress är obligatorisk' }],
@@ -59,7 +59,7 @@ export default function ContactPage () {
       <div style={{ maxWidth: 600 }}>
         <Title>Kontakta oss</Title>
         <Paragraph>Vi försöker att svara på alla meddelanden inom 48 timmar.</Paragraph>
-        <ContactForm onSubmit={submitHandlerPostValidation} />
+        <ContactForm onSubmit={submitHandlerPostValidation} hideRequiredMark={true} />
       </div>
     </div>
   )
