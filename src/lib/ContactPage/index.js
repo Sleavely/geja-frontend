@@ -14,6 +14,10 @@ const {
   Paragraph,
 } = Typography
 
+const {
+  REACT_APP_API_BASE_PATH: API_BASE_PATH
+} = process.env
+
 const ContactForm = Form.create({
   name: 'contact_form',
 })(props => {
@@ -65,12 +69,25 @@ export default function ContactPage () {
     setIsSubmitting(false)
   }, [submitted])
 
-  const submitHandlerPostValidation = (values) => {
-    console.log('sending your datas to N(A)SA', values)
+  const submitHandlerPostValidation = ({ email, message }) => {
     setIsSubmitting(true)
-    setTimeout(() => {
+    fetch(`${API_BASE_PATH}/contact`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        message,
+      })
+    })
+    .then(res => res.json())
+    .then((res) => {
+      if (res.error) throw new Error(res.error)
       setSubmitted(true)
-    }, 1500)
+    })
+    .catch((err) => {
+      // Something went sideways in the backend while fetching the PaymentIntent
+      console.error(err)
+    })
   }
 
   return (
