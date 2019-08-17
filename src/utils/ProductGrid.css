@@ -1,11 +1,11 @@
 
-.category.page .products {
+.product-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.category.page .products .productCard {
+.product-grid .productCard {
   display: inline-block;
   flex: 1 0 30%;
   min-width: 180px;
@@ -13,7 +13,7 @@
   margin-bottom: 16px;
 }
 
-.category.page .products .productCard img {
+.product-grid .productCard img {
   max-width: 100%;
   padding: 2px;
 }
@@ -21,7 +21,7 @@
   margin: 48px 0 32px;
 }
 @media (max-width: 440px) {
-  .category.page .products .productCard {
+  .product-grid .productCard {
     min-width: 100%;
   }
 }
