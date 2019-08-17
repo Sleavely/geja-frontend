@@ -31,7 +31,7 @@ export default function HomePage() {
   return (
     <div className="home page">
       <Title>Välkommen till GEJA Smycken!</Title>
-      <Paragraph>Här kan man köpa fina grejer! Kolla till exempel <Link to="/products/halsband-classic-790">Halsband Classic 790</Link>!</Paragraph>
+      <Paragraph>Nedan ser du ett urval av våra många produkter.</Paragraph>
 
       <Divider />
 
