@@ -1,6 +1,5 @@
 import React from 'react'
 import useReactRouter from 'use-react-router'
-import { useCart } from 'use-cart'
 
 import {
   Drawer,

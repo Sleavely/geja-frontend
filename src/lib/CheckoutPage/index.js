@@ -139,7 +139,7 @@ export default function CheckoutPage() {
                   </Title>
                   <br />
                   <Form.Item label="E-postadress">
-                    <Input name="email" />
+                    <Input name="email" type="email" />
                   </Form.Item>
                   <Form.Item label="Förnamn">
                     <Input name="firstname" />
@@ -151,7 +151,7 @@ export default function CheckoutPage() {
                     <Input name="street" />
                   </Form.Item>
                   <Form.Item label="Postnummer">
-                    <Input name="zipcode" />
+                    <Input name="zipcode" type="number" />
                   </Form.Item>
                   <Form.Item label="Postort">
                     <Input name="city" />
