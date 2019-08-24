@@ -24,7 +24,7 @@ export default function ProductGrid({ products, category = null }) {
             </Card>
           </div>
         ))
-      : products.map((product, i) => (
+      : products.map((product, i) => product.categories.length ? (
         <div
         className="productCard"
         key={i}
@@ -42,7 +42,7 @@ export default function ProductGrid({ products, category = null }) {
           </Link>
         </div>
 
-      ))}
+      ) : console.warn('Product is missing categories!', product) && <></> )}
     </div>
   )
 
