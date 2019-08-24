@@ -29,7 +29,10 @@ export default function ProductGrid({ products, category = null }) {
         className="productCard"
         key={i}
         >
-          <Link to={`/${category ? category.path : product.categories[0].path}/${product.slug}`}>
+          <Link
+            to={`/${category ? category.path : product.categories[0].path}/${product.slug}`}
+            title={product.productName}
+          >
             <Card
               hoverable
               cover={( product.image.length
