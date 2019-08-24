@@ -88,7 +88,7 @@ export default function ProductPage({ slug }) {
               </div>
               )}
               <div className="description">
-              <Markdown source={product.productDescription} />
+              <Markdown source={product.productDescription} escapeHtml={false} />
               </div>
 
               <Card>
