@@ -24,7 +24,7 @@ export default function ProductGrid({ products, category = null }) {
             </Card>
           </div>
         ))
-      : products.map((product, i) => product.categories ? (
+      : products.map((product, i) => product.categories || category ? (
         <div
         className="productCard"
         key={i}
