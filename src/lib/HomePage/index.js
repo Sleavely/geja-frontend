@@ -31,7 +31,7 @@ export default function HomePage() {
   return (
     <div className="home page">
       <Title>Välkommen till GEJA Smycken!</Title>
-      <Paragraph>Nedan ser du ett urval av våra många produkter.</Paragraph>
+      <Paragraph>Nedan ser du ett urval av våra vackra pärlsmycken.</Paragraph>
 
       <Divider />
 
