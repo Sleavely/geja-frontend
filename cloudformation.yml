@@ -52,7 +52,6 @@ Resources:
         Enabled: true
         Aliases:
           - !FindInMap [!Ref ENVIRONMENT, domains, website]
-          - !Join [ ".", [ "www", !FindInMap [!Ref ENVIRONMENT, domains, website] ] ]
         Origins:
           - DomainName: !Sub ${ContentBucket}.s3-website-${AWS::Region}.amazonaws.com
             Id: BucketCustomOrigin
