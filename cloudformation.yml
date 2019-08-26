@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  PROJECT:
+    Type: String
+  ENVIRONMENT:
+    Type: String
+  DEPLOYMENTBUCKET:
+    Type: String
+  HOSTEDZONE:
+    Type: String
+    Description: Root hosted domain name (domain.com)
+    Default: geja.se
+  IndexDocument:
+    Type: String
+    Default: index.html
+
+Mappings:
+  dev:
+    domains:
+      api: aws.triplehead.net
+      website: dev.geja.se
+  prod:
+    domains:
+      api: api.geja.se
+      website: geja.se
+
+Conditions:
+  IsProd: !Equals [ !Ref ENVIRONMENT, prod ]
+
+Resources:
+  ContentBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub ${DEPLOYMENTBUCKET}
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: !Ref IndexDocument
+        ErrorDocument: !Ref IndexDocument
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    DeletionPolicy: Retain
+    Properties:
+      DomainName: !FindInMap [!Ref ENVIRONMENT, domains, website]
+      DomainValidationOptions:
+        - DomainName: !FindInMap [!Ref ENVIRONMENT, domains, website]
+          ValidationDomain: !Ref HOSTEDZONE
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    DependsOn:
+      - ContentBucket
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Aliases:
+          - !FindInMap [!Ref ENVIRONMENT, domains, website]
+        Origins:
+          - DomainName: !Sub ${ContentBucket}.s3-website-${AWS::Region}.amazonaws.com
+            Id: BucketCustomOrigin
+            CustomOriginConfig:
+              HTTPPort: 80
+              OriginProtocolPolicy: http-only
+        # http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Expiration.html#ExpirationDownloadDist
+        CustomErrorResponses:
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: !Join [ "", [ "/", !Ref IndexDocument ] ]
+        DefaultCacheBehavior:
+          TargetOriginId: BucketCustomOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          DefaultTTL: 300
+          MinTTL: 300
+        ViewerCertificate:
+          AcmCertificateArn: !Ref Certificate
+          MinimumProtocolVersion: 'TLSv1'
+          SslSupportMethod: 'sni-only'
+
+  DNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Join [ "", [ !Ref HOSTEDZONE, "." ] ]
+      Name: !Join [ "", [ !FindInMap [!Ref ENVIRONMENT, domains, website], "." ] ]
+      Type: CNAME
+      TTL: '600'
+      ResourceRecords:
+        - !GetAtt Distribution.DomainName
