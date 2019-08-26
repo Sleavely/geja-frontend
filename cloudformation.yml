@@ -32,7 +32,6 @@ Conditions:
 Resources:
   ContentBucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
     Properties:
       BucketName: !Sub ${DEPLOYMENTBUCKET}
       AccessControl: PublicRead
@@ -42,12 +41,14 @@ Resources:
 
   Certificate:
     Type: AWS::CertificateManager::Certificate
-    DeletionPolicy: Retain
     Properties:
       DomainName: !FindInMap [!Ref ENVIRONMENT, domains, website]
       DomainValidationOptions:
         - DomainName: !FindInMap [!Ref ENVIRONMENT, domains, website]
           ValidationDomain: !Ref HOSTEDZONE
+      SubjectAlternativeNames:
+        - !Join [ ".", [ "www", !FindInMap [!Ref ENVIRONMENT, domains, website] ] ]
+      ValidationMethod: DNS
 
   Distribution:
     Type: AWS::CloudFront::Distribution
@@ -58,6 +59,7 @@ Resources:
         Enabled: true
         Aliases:
           - !FindInMap [!Ref ENVIRONMENT, domains, website]
+          - !Join [ ".", [ "www", !FindInMap [!Ref ENVIRONMENT, domains, website] ] ]
         Origins:
           - DomainName: !Sub ${ContentBucket}.s3-website-${AWS::Region}.amazonaws.com
             Id: BucketCustomOrigin
