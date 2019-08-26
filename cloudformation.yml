@@ -47,6 +47,20 @@ Resources:
         IndexDocument: !Ref IndexDocument
         ErrorDocument: !Ref IndexDocument
 
+  ContentBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ContentBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadGetObject,
+            Effect: Allow
+            Principal: '*'
+            Action:
+              - s3:GetObject
+            Resource: !Sub ${ContentBucket.Arn}/*
+
   Distribution:
     Type: AWS::CloudFront::Distribution
     DependsOn:
