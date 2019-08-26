@@ -15,6 +15,10 @@ Parameters:
   IndexDocument:
     Type: String
     Default: index.html
+  Certificate:
+    Type: String
+    Description: ARN to an ACM certificate hosted in us-east-1
+    Default: arn:aws:acm:us-east-1:479330620126:certificate/35c98082-94dd-488e-acf3-ffbdf5f206cd
 
 Mappings:
   dev:
@@ -38,17 +42,6 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: !Ref IndexDocument
         ErrorDocument: !Ref IndexDocument
-
-  Certificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !FindInMap [!Ref ENVIRONMENT, domains, website]
-      DomainValidationOptions:
-        - DomainName: !FindInMap [!Ref ENVIRONMENT, domains, website]
-          ValidationDomain: !Ref HOSTEDZONE
-      SubjectAlternativeNames:
-        - !Join [ ".", [ "www", !FindInMap [!Ref ENVIRONMENT, domains, website] ] ]
-      ValidationMethod: DNS
 
   Distribution:
     Type: AWS::CloudFront::Distribution
@@ -82,6 +75,7 @@ Resources:
           Compress: true
           DefaultTTL: 300
           MinTTL: 300
+        PriceClass: PriceClass_100
         ViewerCertificate:
           AcmCertificateArn: !Ref Certificate
           MinimumProtocolVersion: 'TLSv1'
