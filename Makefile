@@ -38,7 +38,7 @@ deploy:
 	@rm -rf dist
 	@mkdir -p dist
 
-	@echo "Building CloudFormation template"
+	@echo "Building CloudFormation template for $(ENVIRONMENT)"
 	$(call package)
 	@echo "-"
 
