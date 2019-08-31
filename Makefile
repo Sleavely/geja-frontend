@@ -26,6 +26,13 @@ deploy = aws cloudformation deploy --template-file dist/cloudformation.dist.yml 
     --s3-bucket $(ARTIFACTS_BUCKET) \
     # --no-fail-on-empty-changeset
 
+
+ifeq ($(ENVIRONMENT), prod)
+	export REACT_APP_API_BASE_PATH = https://api.geja.se
+else
+	export REACT_APP_API_BASE_PATH = https://aws.triplehead.net/geja
+endif
+
 deploy:
 	@echo "Resetting dist directory"
 	@rm -rf dist
