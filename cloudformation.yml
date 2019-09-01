@@ -102,7 +102,7 @@ Resources:
           MinimumProtocolVersion: 'TLSv1'
           SslSupportMethod: 'sni-only'
 
-  DNSRecord:
+  DistributionDNSAlias:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneId: !Join [ "", [ !Ref HOSTEDZONE, "." ] ]
