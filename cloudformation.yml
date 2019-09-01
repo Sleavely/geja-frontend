@@ -105,7 +105,7 @@ Resources:
   DistributionDNSAlias:
     Type: AWS::Route53::RecordSetGroup
     Properties:
-      HostedZoneId: !Join [ "", [ !Ref HOSTEDZONE, "." ] ]
+      HostedZoneName: !Join [ "", [ !Ref HOSTEDZONE, "." ] ]
       RecordSets:
       - Name: !Join [ "", [ !FindInMap [!Ref ENVIRONMENT, domains, website], "." ] ]
         Type: A
