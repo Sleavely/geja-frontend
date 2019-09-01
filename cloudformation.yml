@@ -103,11 +103,15 @@ Resources:
           SslSupportMethod: 'sni-only'
 
   DNSRecord:
-    Type: AWS::Route53::RecordSet
+    Type: AWS::Route53::RecordSetGroup
     Properties:
-      HostedZoneName: !Join [ "", [ !Ref HOSTEDZONE, "." ] ]
-      Name: !Join [ "", [ !FindInMap [!Ref ENVIRONMENT, domains, website], "." ] ]
-      Type: CNAME
-      TTL: '600'
-      ResourceRecords:
-        - !GetAtt Distribution.DomainName
+      HostedZoneId: !Join [ "", [ !Ref HOSTEDZONE, "." ] ]
+      RecordSets:
+      - Name: !Join [ "", [ !FindInMap [!Ref ENVIRONMENT, domains, website], "." ] ]
+        Type: A
+        AliasTarget:
+          # When you create alias resource record sets for CloudFront,
+          # you must specify Z2FDTNDATAQYW2 for the HostedZoneId property.
+          # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/quickref-route53.html#w2ab1c17c23c81c11
+          HostedZoneId: Z2FDTNDATAQYW2
+          DNSName: !GetAtt Distribution.DomainName
