@@ -31,7 +31,7 @@ deploy = aws cloudformation deploy --template-file dist/cloudformation.dist.yml 
 # - We want syntax highlighting
 # - We want to easily gitignore these files
 # - We dont want to conflict with create-react-app (https://create-react-app.dev/docs/adding-custom-environment-variables#what-other-env-files-can-be-used)
-ifeq (,$(wildcard .$(ENVIRONMENT).env))
+ifneq (,$(wildcard .$(ENVIRONMENT).env))
 	include .$(ENVIRONMENT).env
 	export $(shell sed 's/=.*//' .$(ENVIRONMENT).env)
 endif
