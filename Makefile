@@ -26,11 +26,14 @@ deploy = aws cloudformation deploy --template-file dist/cloudformation.dist.yml 
     --s3-bucket $(ARTIFACTS_BUCKET) \
     # --no-fail-on-empty-changeset
 
-
-ifeq ($(ENVIRONMENT), prod)
-	export REACT_APP_API_BASE_PATH = https://api.geja.se
-else
-	export REACT_APP_API_BASE_PATH = https://aws.triplehead.net/geja
+# If env-specific config exists, source it.
+# Note that the naming convention is important:
+# - We want syntax highlighting
+# - We want to easily gitignore these files
+# - We dont want to conflict with create-react-app (https://create-react-app.dev/docs/adding-custom-environment-variables#what-other-env-files-can-be-used)
+ifeq (,$(wildcard .$(ENVIRONMENT).env))
+	include .$(ENVIRONMENT).env
+	export $(shell sed 's/=.*//' .$(ENVIRONMENT).env)
 endif
 
 deploy:
