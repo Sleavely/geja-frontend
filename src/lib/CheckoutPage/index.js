@@ -35,7 +35,8 @@ const formItemLayout = {
 }
 
 const {
-  REACT_APP_API_BASE_PATH: API_BASE_PATH
+  REACT_APP_API_BASE_PATH: API_BASE_PATH,
+  REACT_APP_STRIPE_PUBKEY: STRIPE_PUBKEY,
 } = process.env
 
 const CardDiv = ({ children }) => {
@@ -98,7 +99,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <StripeProvider apiKey="pk_lKbdxdGwZ0pfDoEOssP69tH4Eqvl0">
+    <StripeProvider apiKey={STRIPE_PUBKEY}>
       <div className="checkout page">
         <Title>Kassa</Title>
 
