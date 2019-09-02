@@ -34,13 +34,13 @@ export default function TermsPage () {
       <Title level={3}>FÖRSÄLJNINGS- OCH LEVERANSVILLKOR</Title>
 
       <Title level={4}>Priser</Title>
-      <Paragraph>Alla priser anges i svenska kronor och innehåller mervärdesskatt och övriga avgifter. Totalkostnaden för köpet kommer att framkomma tydligt innan slutlig beställning och kommer att inkludera samtliga kostnader förenade med köpet, inklusive eventuella porto-och fraktkostnader.</Paragraph>
+      <Paragraph>Alla priser anges i svenska kronor inklusive moms. Totalkostnaden framkommer tydligt innan slutlig beställning, inklusive eventuella porto-och fraktkostnader.</Paragraph>
 
       <Title level={4}>Leverans</Title>
-      <Paragraph>Vanligtvis kommer varan skickas från oss senast 3 arbetsdagar efter att ordern mottagits. Om varan inte finns i lager skickas en notis om detta via e-post.</Paragraph>
+      <Paragraph>Vanligtvis kommer varan skickas från oss inom 3 arbetsdagar efter godkänd betalning. Om varan inte finns i lager skickas en notis om detta via e-post.</Paragraph>
 
       <Title level={4}>Frakt</Title>
-      <Paragraph>Vi skickar din vara <Text mark>skriv något om hur varan skickas (spårbart?)</Text>. Kostnader förenade med frakten visas i kassan och räknas in i totalbeloppet.</Paragraph>
+      <Paragraph>Vi skickar din order med PostNord som spårbar försändelse. Kostnader förenade med frakten visas i kassan och räknas in i totalbeloppet.</Paragraph>
 
       <Title level={4}>Betalning</Title>
       <Paragraph>Betalning skall vara GEJA Smycken tillhanda innan ordern bearbetas. Vanligtvis sker betalning i samband med att beställningen genomförs på hemsidan.</Paragraph>
