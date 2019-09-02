@@ -64,7 +64,7 @@ export default function Cart({ productCache }) {
                 if(!product) return 0
                 total = total + (cartItem.quantity * product.price)
                 return total
-              }, 0)}
+              }, 63)}
               suffix={'SEK'}
               groupSeparator={' '}
               decimalSeparator={','}
