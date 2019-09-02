@@ -22,7 +22,7 @@ export default function TermsPage () {
       <Title level={3}>FÖRETAGSINFORMATION</Title>
       <Paragraph>GEJA Smycken drivs av GEJA Trading Handelsbolag, org.nr 969600-5736</Paragraph>
       <Paragraph>
-        <Text strong>E-post:</Text> <a href="mailto:support@geja.se">support@geja.se</a><br/>
+        <Text strong>E-post:</Text> <a href="mailto:info@geja.se">info@geja.se</a><br/>
       </Paragraph>
       <Paragraph>
         <Text strong>Postadress:</Text><br/>
@@ -60,16 +60,13 @@ export default function TermsPage () {
       <Paragraph>Avbeställning går endast att göra innan varorna skickas från lagret. Efter varorna skickas från lagret måste du skapa ett returärende, se avsnittet Ångerrätt. För att avbeställa en vara kontaktar du vår kundtjänst med din betalningsreferens.</Paragraph>
 
       <Title level={4}>Ångerrätt</Title>
-      <Paragraph>Ångerrätten gäller i 14 dagar från det att du som köpare mottagit varan. Om du vill ångra köpet så returnerar du varan i väsentligt oförändrat skick så får du tillbaka det du har betalat för varan, inklusive fraktkostnader.</Paragraph>
+      <Paragraph>Ångerrätten gäller i 14 dagar från det att du som köpare mottagit varan. Om du vill ångra köpet så meddela oss via kontaktformuläret på hemsidan och returnera varan i oanvänt skick så får du tillbaka det du har betalat för varan.</Paragraph>
 
       <Title level={4}>Reklamation</Title>
-      <Paragraph>Om det föreligger ett fel på varan, bör du inom skälig tid efter att du upptäckt det, meddela GEJA Smycken skriftligen. GEJA Smycken kommer då ge dig information om hur du går vidare. Reglerna kring reklamation finns i Konsumentköplagen.</Paragraph>
+      <Paragraph>Om det föreligger ett fel på varan, bör du inom skälig tid efter att du upptäckt det, meddela via kontaktformuläret på hemsidan. GEJA Smycken kommer då ge dig information om hur du går vidare. Reglerna kring reklamation finns i Konsumentköplagen.</Paragraph>
 
       <Title level={4}>Returfrakt</Title>
-      <Paragraph><Text mark>Beskriv vem som betalar returen om det är ni eller konsumenten</Text> För utförlig information se retursedeln (som bifogats försändelsen).</Paragraph>
-
-      <Title level={4}>Garanti</Title>
-      <Paragraph><Text mark>Upplysning om garanti på varorna. Garantin ger kunden rättigheter utöver rätten till reklamation som kunden har via Konsumentköplagen</Text></Paragraph>
+      <Paragraph>Om du väljer att nyttja din ångerrätt ombesörjer du själv frakten för returen.</Paragraph>
     </div>
   )
 }
