@@ -51,7 +51,7 @@ export default function Cart({ productCache }) {
               title="Frakt"
             />
             <div>
-              Gratis
+              63 SEK
             </div>
           </List.Item>
           <List.Item>
