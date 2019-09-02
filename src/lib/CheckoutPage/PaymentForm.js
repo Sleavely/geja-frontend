@@ -39,6 +39,7 @@ class PaymentForm extends Component {
     this.props.stripe.handleCardPayment(paymentIntent.client_secret, {
       shipping: {
         name: `${customerInfo.firstname} ${customerInfo.lastname}`,
+        phone: customerInfo.phone,
         address: {
           line1: customerInfo.street,
           postal_code: customerInfo.zipcode,

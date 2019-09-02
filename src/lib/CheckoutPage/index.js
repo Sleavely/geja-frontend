@@ -142,6 +142,9 @@ export default function CheckoutPage() {
                   <Form.Item label="E-postadress">
                     <Input name="email" type="email" />
                   </Form.Item>
+                  <Form.Item label="Telefonnummer">
+                    <Input name="phone" type="tel" />
+                  </Form.Item>
                   <Form.Item label="Förnamn">
                     <Input name="firstname" />
                   </Form.Item>
