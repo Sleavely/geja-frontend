@@ -38,7 +38,7 @@ export default function Cart({ productCache }) {
               title={<Link to={`/${product.categories[0].path}/${product.slug}`}>{product.productName}</Link>}
             />
             <div>
-              {cartItem.quantity}st á {product.price} SEK
+              {cartItem.quantity}st á {product.price} kr
             </div>
           </List.Item>
         )}}
@@ -51,7 +51,7 @@ export default function Cart({ productCache }) {
               title="Frakt"
             />
             <div>
-              63 SEK
+              63 kr
             </div>
           </List.Item>
           <List.Item>
@@ -65,7 +65,7 @@ export default function Cart({ productCache }) {
                 total = total + (cartItem.quantity * product.price)
                 return total
               }, 63)}
-              suffix={'SEK'}
+              suffix={'kr'}
               groupSeparator={' '}
               decimalSeparator={','}
             />
