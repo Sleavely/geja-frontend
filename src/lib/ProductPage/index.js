@@ -74,7 +74,7 @@ export default function ProductPage({ slug }) {
             <Col md={12}>
               <Title>{product.productName}</Title>
               <Paragraph>
-                <Statistic title="" value={product.price} suffix="SEK" groupSeparator=" " />
+                <Statistic title="" value={product.price} suffix="kr" groupSeparator=" " />
               </Paragraph>
               { product.image && (
               <div className="slider-mobile">

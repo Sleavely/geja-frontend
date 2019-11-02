@@ -40,7 +40,7 @@ export default function ProductGrid({ products, category = null }) {
                 : false
               )}
             >
-              <Card.Meta title={product.productName} description={`${product.price} SEK`} />
+              <Card.Meta title={product.productName} description={`${product.price} kr`} />
             </Card>
           </Link>
         </div>
