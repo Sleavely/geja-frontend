@@ -20,6 +20,7 @@ import TermsPage from './lib/TermsPage'
 
 import { LoadCart, SaveCart } from './utils/cartStorage'
 import PageHeader from './utils/PageHeader'
+import PageviewTracker from './utils/googleAnalytics'
 
 const {
   Content,
@@ -27,7 +28,7 @@ const {
 } = Layout
 
 const {
-  REACT_APP_API_BASE_PATH: API_BASE_PATH
+  REACT_APP_API_BASE_PATH: API_BASE_PATH,
 } = process.env
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
     <CartProvider initialCart={LoadCart()}>
       <SaveCart />
       <Router>
+        <PageviewTracker />
         <Layout style={{ minHeight: '100vh' }}>
           <SideMenu
             isResponsive={isResponsive}
