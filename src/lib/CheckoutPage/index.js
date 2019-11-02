@@ -56,6 +56,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     document.title = `Kassan | GEJA Smycken`
+    document.querySelector('body').scrollIntoView(true)
 
     Promise.all(cartItems.map((item) => {
       return fetch(`${API_BASE_PATH}/contentful/products/${item.sku}`)
