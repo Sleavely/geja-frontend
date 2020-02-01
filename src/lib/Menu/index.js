@@ -44,9 +44,22 @@ function SideMenu({ onCollapse, collapsed, setCollapsed, isResponsive, location,
       collapsed={collapsed}
       onCollapse={onCollapse}
       breakpoint="lg"
-      collapsedWidth="0"
+      collapsedWidth={0}
       onBreakpoint={(broken) => { console.log('menu has breakpoint', broken); }}
-      style={ isResponsive && !collapsed ? { borderRight: '1px solid #f0f2f5', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.09)' } : {} }
+      style={
+        isResponsive && !collapsed ?
+          {
+            borderRight: '1px solid #f0f2f5',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.09)'
+          }
+        :
+        isResponsive && collapsed ?
+          {
+            opacity: 0
+          }
+        :
+          {}
+      }
       theme="light"
     >
       <Affix offsetTop={0}>
