@@ -45,7 +45,10 @@ export default function Cart({ productCache }) {
       >
 
         <Skeleton loading={!cartItems.every(cartItem => productCache.some(cached => cached.slug === cartItem.sku))}>
-          <List.Item actions={[<div style={{ width: 76.34 }}></div>]}>
+          <List.Item
+            className="shipping"
+            actions={[<div style={{ width: 76.34 }}></div>]}
+          >
             <List.Item.Meta
               avatar={ <Avatar src={'/images/postnord.svg'} shape="square" size="large" style={{ border: '1px solid #f0f2f5' }} /> }
               title="Frakt"
