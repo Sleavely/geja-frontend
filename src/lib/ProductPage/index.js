@@ -32,7 +32,7 @@ export default function ProductPage({ slug }) {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch(`${API_BASE_PATH}/contentful/products/${slug}`)
+    fetch(`${API_BASE_PATH}/products/${slug}`)
       .then((data) => {
         //TODO: shouldnt the router be responsible for 404-like management?
         console.log('product response', data)

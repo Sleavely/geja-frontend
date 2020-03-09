@@ -22,7 +22,7 @@ export default function HomePage() {
   useEffect(() => {
     document.title = `GEJA Smycken`
 
-    fetch(`${API_BASE_PATH}/contentful/products?limit=10`)
+    fetch(`${API_BASE_PATH}/products?limit=10`)
       .then((data) => data.json())
       .then(setProducts)
   }, [])

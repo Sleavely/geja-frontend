@@ -59,7 +59,7 @@ export default function CheckoutPage() {
     document.querySelector('body').scrollIntoView(true)
 
     Promise.all(cartItems.map((item) => {
-      return fetch(`${API_BASE_PATH}/contentful/products/${item.sku}`)
+      return fetch(`${API_BASE_PATH}/products/${item.sku}`)
         .then((data) => data.json())
     }))
     .then((products) => {

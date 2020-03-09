@@ -39,7 +39,7 @@ function App() {
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
-    fetch(`${API_BASE_PATH}/contentful/categories`)
+    fetch(`${API_BASE_PATH}/categories`)
       .then((data) => data.json())
       .then((body) => {
         setCategories(body.map((category) => ({

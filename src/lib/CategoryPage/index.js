@@ -20,7 +20,7 @@ export default function CategoryPage({ category }) {
   const [products, setProducts] = useState(false)
 
   useEffect(() => {
-    fetch(`${API_BASE_PATH}/contentful/categories/${category.path}/products`)
+    fetch(`${API_BASE_PATH}/categories/${category.path}/products`)
       .then((data) => data.json())
       .then(setProducts)
     if(category.title) document.title = `${category.title} | GEJA Smycken`
