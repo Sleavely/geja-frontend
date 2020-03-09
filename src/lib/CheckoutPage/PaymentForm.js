@@ -27,9 +27,24 @@ class PaymentForm extends Component {
     this.submit = this.submit.bind(this)
   }
 
-  async submit(ev) {
-    ev.preventDefault()
+  customerInfoIsValid() {
+    const requiredCustomerInfoProps = [
+      'firstname',
+      'lastname',
+      'phone',
+      'email',
+      'street',
+      'zipcode',
+      'city',
+    ]
+    if (this.props.customerInfo && requiredCustomerInfoProps.every((prop) => !!this.props.customerInfo[prop])) {
+      return true
+    }
+    this.setState({ paymentError: 'En eller flera adressuppgifter saknas.'})
+    return false
+  }
 
+  async submit() {
     this.setState({ processingCard: true, paymentError: '' })
 
     const paymentIntent = this.props.paymentIntent
@@ -90,13 +105,16 @@ class PaymentForm extends Component {
             && this.state.cardCvc
           )}
           loading={this.state.processingCard}
-          onClick={this.submit}>
+          onClick={(ev) => {
+            ev.preventDefault()
+            if (this.customerInfoIsValid()) this.submit()
+          }}>
           Betala
         </Button>
 
         {
           this.state.paymentError
-          ? <Alert message={this.state.paymentError} type="error" showIcon />
+          ? <Alert message={this.state.paymentError} type="error" showIcon style={{ marginTop: '0.5em' }} />
           : ''
         }
 
