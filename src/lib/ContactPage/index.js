@@ -75,8 +75,8 @@ export default function ContactPage () {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        email: email.trim(),
-        message: message.trim(),
+        email: email,
+        message: message,
       })
     })
     .then(res => res.json())
