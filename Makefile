@@ -37,6 +37,10 @@ ifneq (,$(wildcard .$(ENVIRONMENT).env))
 endif
 
 deploy:
+	@echo "Resetting dist directory"
+	@rm -rf dist
+	@mkdir -p dist
+
 	@echo "Building CloudFormation template for $(ENVIRONMENT)"
 	$(call package)
 	@echo "-"
@@ -51,4 +55,6 @@ deploy:
 	  --metadata GitBranch=$(BRANCH_NAME),GitCommit=$(COMMIT_HASH) \
 	  build/ s3://$(DEPLOYMENT_BUCKET)
 
+	@echo "Cleaning up"
+	@rm -rf dist
 	@echo "Done!"
