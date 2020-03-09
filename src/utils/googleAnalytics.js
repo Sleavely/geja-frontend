@@ -3,15 +3,15 @@ import ReactGA from 'react-ga'
 import useLocation from 'react-use/lib/useLocation'
 
 const {
-  REACT_APP_GOOGLE_ANALYTICS_ID: ANALYTICS_ID,
+  NODE_ENV = '',
+  REACT_APP_GOOGLE_ANALYTICS_ID: ANALYTICS_ID = 'UA-XXXXXXXX-Y',
 } = process.env
 
 const PageviewTracker = ({ children }) => {
   const location = useLocation()
 
   useEffect(() => {
-    console.log('Initializing GA')
-    ReactGA.initialize(ANALYTICS_ID)
+    ReactGA.initialize(ANALYTICS_ID, { testMode: NODE_ENV === 'test' })
   }, [])
 
   useEffect(() => {
