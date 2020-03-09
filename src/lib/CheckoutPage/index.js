@@ -130,7 +130,7 @@ export default function CheckoutPage() {
                   e.persist()
                   const newCustomerInfo = customerInfo
                     ? { ...customerInfo, [e.target.name]: e.target.value }
-                    : { [e.target.name]: e.target.value}
+                    : { [e.target.name]: e.target.value }
                   setCustomerInfo(newCustomerInfo)
                   console.log('form changed', newCustomerInfo)
                 }}>
