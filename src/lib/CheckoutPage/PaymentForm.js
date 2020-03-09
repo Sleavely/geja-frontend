@@ -38,15 +38,15 @@ class PaymentForm extends Component {
 
     this.props.stripe.handleCardPayment(paymentIntent.client_secret, {
       shipping: {
-        name: `${customerInfo.firstname} ${customerInfo.lastname}`,
-        phone: customerInfo.phone,
+        name: `${customerInfo.firstname} ${customerInfo.lastname}`.trim(),
+        phone: customerInfo.phone.trim(),
         address: {
-          line1: customerInfo.street,
-          postal_code: customerInfo.zipcode,
-          city: customerInfo.city
+          line1: customerInfo.street.trim(),
+          postal_code: customerInfo.zipcode.trim(),
+          city: customerInfo.city.trim()
         },
       },
-      receipt_email: customerInfo.email,
+      receipt_email: customerInfo.email.trim(),
     })
     .then((result) => {
       if (result.error) {
