@@ -26,4 +26,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 ### Deployment
 
+The dev environment is automatically deployed from CircleCI, but the gist of it is:
+
 `ENVIRONMENT=dev make deploy`
